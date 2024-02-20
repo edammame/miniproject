@@ -1,4 +1,4 @@
-import { axiosInstanceSSR } from "../axios/axios";
+import { axiosInstanceSSR } from "../../axios/axios";
 
 export const metadata = {
   title: "Event",

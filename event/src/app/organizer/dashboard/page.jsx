@@ -1,21 +1,21 @@
 "use client";
 import React from "react";
-import { DatePicker } from "antd";
+// import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { axiosInstance } from "../../axios/axios";
+import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
-import OrganizerProductCard from "@/app/components/organizer/organizerCard";
+// import OrganizerProductCard from "@/app/components/organizer/organizerCard";
 import { IoSearch } from "react-icons/io5";
-import { LuCopyPlus } from "react-icons/lu";
+// import { LuCopyPlus } from "react-icons/lu";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import {
-  ArrowDownTrayIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+// import {
+//   ArrowDownTrayIcon,
+//   MagnifyingGlassIcon,
+// } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
@@ -29,7 +29,7 @@ import {
   Tooltip,
   Input,
 } from "@material-tailwind/react";
-import AddEventComponent from "@/app/components/organizer/organizerCard";
+import AddEventComponent from "../../../components/organizer/organizerCard";
 
 function DashboardPage() {
   {
