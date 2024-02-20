@@ -4,18 +4,12 @@ import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
-// import OrganizerProductCard from "@/app/components/organizer/organizerCard";
 import { IoSearch } from "react-icons/io5";
-// import { LuCopyPlus } from "react-icons/lu";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-// import {
-//   ArrowDownTrayIcon,
-//   MagnifyingGlassIcon,
-// } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
@@ -30,6 +24,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import AddEventComponent from "../../../components/organizer/organizerCard";
+import SidebarComponent from "@/components/sidebar";
 
 function DashboardPage() {
   {
@@ -91,6 +86,7 @@ function DashboardPage() {
 
   return (
     <>
+      <SidebarComponent />
       <div className="w-full bg-[#F1F1F1]">
         <div className="flex flex-col justify-center  max-w-[1000px] w-full items-center m-auto  ">
           <div className="w-full text-black font-semibold p-4 text-lg">
@@ -167,7 +163,7 @@ function DashboardPage() {
                         : "p-4 border-b border-blue-gray-50";
 
                       return (
-                        <tr key={key}>
+                        <tr key={eventname}>
                           <td className={classes}>
                             <div className="flex items-center gap-2">
                               <Typography
@@ -251,6 +247,37 @@ function DashboardPage() {
                 </tbody>
               </table>
             </CardBody>
+            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+              <Button variant="outlined" size="sm">
+                Previous
+              </Button>
+              <div className="flex items-center gap-2">
+                <IconButton variant="outlined" size="sm">
+                  1
+                </IconButton>
+                <IconButton variant="text" size="sm">
+                  2
+                </IconButton>
+                <IconButton variant="text" size="sm">
+                  3
+                </IconButton>
+                <IconButton variant="text" size="sm">
+                  ...
+                </IconButton>
+                <IconButton variant="text" size="sm">
+                  8
+                </IconButton>
+                <IconButton variant="text" size="sm">
+                  9
+                </IconButton>
+                <IconButton variant="text" size="sm">
+                  10
+                </IconButton>
+              </div>
+              <Button variant="outlined" size="sm">
+                Next
+              </Button>
+            </CardFooter>
           </Card>
 
           {/* Event List */}
@@ -402,10 +429,10 @@ function DashboardPage() {
               className="text-base  px-5"
               onClick={() => handleOpen(2)}
             >
-              Recent Transaction
+              Events Summary
             </AccordionHeader>
             <AccordionBody>
-              creating new voucher code will be here
+              event by category & event by location will shown here
             </AccordionBody>
           </Accordion>
           <Accordion open={open === 3}>
