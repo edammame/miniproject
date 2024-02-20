@@ -46,7 +46,6 @@ function AddEventComponent() {
     formik.setFieldValue("eventdescription", event.eventdescription);
     formik.setFieldValue("eventdate", event.eventdate);
     formik.setFieldValue("eventdate", event.eventdate);
-
     formik.setFieldValue("eventtype", event.eventtype);
     formik.setFieldValue("availableseat", event.availableseat);
   };
@@ -67,13 +66,13 @@ function AddEventComponent() {
     console.log(formik.values);
     const form = new FormData();
     form.append("eventname", formik.values.eventname);
+    form.append("eventlocation", formik.values.eventlocation);
     form.append("eventposter", formik.values.eventposter);
     form.append("eventprice", formik.values.eventprice);
     form.append("eventdescription", formik.values.eventdescription);
     form.append("eventtype", formik.values.eventtype);
     form.append("starteventdate", formik.values.starteventdate);
     form.append("endeventdate", formik.values.endeventdate);
-
     form.append("availableseat", formik.values.availableseat);
 
     if (formik.values.id) {
@@ -109,7 +108,7 @@ function AddEventComponent() {
         <div className="flex flex-col gap-1 text-black font-normal">
           <table className=" ">
             <tr>
-              <td className="px-2 "> Event Name</td>
+              <td className="px-2 "> Name</td>
               <td>
                 <input
                   type="text"
@@ -118,6 +117,23 @@ function AddEventComponent() {
                   required
                   id="eventname"
                   value={formik.values.eventname}
+                  onChange={formik.handleChange}
+                  // onChange={(e) => {
+                  //   formik.setFieldValue("product_name", e.target.value);
+                  // }}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="px-2 "> Location</td>
+              <td>
+                <input
+                  type="text"
+                  placeholder=" Event Location Detail"
+                  className="border border-gray-300 py-1 text-[14px] text-black rounded-md min-w-64"
+                  required
+                  id="eventlocation"
+                  value={formik.values.eventlocation}
                   onChange={formik.handleChange}
                   // onChange={(e) => {
                   //   formik.setFieldValue("product_name", e.target.value);
@@ -163,7 +179,7 @@ function AddEventComponent() {
               </td>
             </tr>
             <tr>
-              <td className="px-2 "> Event Ticket Price</td>
+              <td className="px-2 "> Ticket Price</td>
               <td>
                 <input
                   type="number"

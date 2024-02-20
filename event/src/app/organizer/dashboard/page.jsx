@@ -2,6 +2,8 @@
 import React from "react";
 // import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
 import { IoSearch } from "react-icons/io5";
@@ -86,12 +88,12 @@ function DashboardPage() {
 
   return (
     <>
-      <SidebarComponent />
       <div className="w-full bg-[#F1F1F1]">
         <div className="flex flex-col justify-center  max-w-[1000px] w-full items-center m-auto  ">
           <div className="w-full text-black font-semibold p-4 text-lg">
             Organizer Event Management Dashboard
           </div>
+          <SidebarComponent />
           {/* Search Bar  */}
           <div className="py-5 w-full ">
             <div className="flex px-3 items-center gap-3 border-gray-300 border-b w-72  p-2">
@@ -248,9 +250,9 @@ function DashboardPage() {
               </table>
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-              <Button variant="outlined" size="sm">
-                Previous
-              </Button>
+              <button size="sm">
+                <FaArrowLeft />
+              </button>
               <div className="flex items-center gap-2">
                 <IconButton variant="outlined" size="sm">
                   1
@@ -274,9 +276,9 @@ function DashboardPage() {
                   10
                 </IconButton>
               </div>
-              <Button variant="outlined" size="sm">
-                Next
-              </Button>
+              <button size="sm">
+                <FaArrowRight />
+              </button>
             </CardFooter>
           </Card>
 
