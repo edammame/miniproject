@@ -9,6 +9,7 @@ function HomePage() {
             Organizer Event Management Dashboard
           </div>
           <SidebarComponent />
+          tampilin data organizer disini?
         </div>
       </div>
     </>

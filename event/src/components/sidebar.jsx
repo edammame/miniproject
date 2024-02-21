@@ -18,6 +18,18 @@ function SidebarComponent() {
           Event
         </Link>
         <Link
+          href="/organizer/transaction"
+          className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
+        >
+          Transaction
+        </Link>
+        <Link
+          href="/organizer/home"
+          className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
+        >
+          Attendee
+        </Link>
+        <Link
           href="/organizer/voucher"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
