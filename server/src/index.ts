@@ -2,10 +2,7 @@
 
 import express, { Application, Response, Request, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
-// import { routes } from "./routes";
-// import cors from "cors";
-// import { config } from "dotenv";
-// config();
+import { routes } from "./routes";
 
 export const prisma = new PrismaClient();
 
@@ -17,7 +14,8 @@ app.use(express.json());
 const PORT = process.env.PORT;
 
 //routes
-app.use("/organizer", routes.organizerRoutes);
+app.use("/events", routes.eventRoutes);
+// app.use("/organizers", routes.organizerRoutes);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ message: error.message || "internal server error" });

@@ -1,5 +1,5 @@
-// import { route as eventRoutes } from "./organizer";
+import { route as eventRoutes } from "./events";
 
-// export const routes = {
-//   organizerRoutes,
-// };
+export const routes = {
+  eventRoutes,
+};
