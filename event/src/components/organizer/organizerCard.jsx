@@ -261,13 +261,13 @@ function AddEventComponent() {
           </table>
           <div className="flex gap-2 p-2">
             <button
-              className=" bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
+              className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
               type="submit"
             >
               Save
             </button>
             <button
-              className="bg-[#FADB7A] hover:bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
+              className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
               onClick={() => formik.resetForm()}
             >
               Reset

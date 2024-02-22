@@ -6,7 +6,7 @@ import { routes } from "./routes";
 
 export const prisma = new PrismaClient();
 
-export const secretKey = String(process.env.secretKey);
+// export const secretKey = String(process.env.secretKey);
 
 const app: Application = express();
 app.use(express.json());

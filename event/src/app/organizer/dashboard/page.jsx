@@ -114,12 +114,12 @@ function DashboardPage() {
               <div className=" flex flex-col justify-between gap-3 md:flex-row md:items-center">
                 <div>
                   <Typography
-                    className=" text-base font-semibold"
+                    className=" text-[14px] font-semibold"
                     color="blue-gray"
                   >
                     Event Last Added
                   </Typography>
-                  <Typography color="gray" className="mt-1 font-normal text-sm">
+                  <Typography color="gray" className="mt-1 text-[11px] ">
                     These are list of event details that are added to the
                     database
                   </Typography>
@@ -133,12 +133,12 @@ function DashboardPage() {
                     {tableHead.map((head) => (
                       <th
                         key={head}
-                        className="border-y text-center border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
+                        className="border-y   border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
                       >
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-normal leading-none opacity-70"
+                          className="text-center font-semibold text-[12px] leading-none opacity-70"
                         >
                           {head}
                         </Typography>
@@ -308,7 +308,7 @@ function DashboardPage() {
 
           <Accordion open={open === 1} className="mt-14 px-5">
             <AccordionHeader
-              className="text-base"
+              className="text-[14px]"
               onClick={() => handleOpen(1)}
             >
               New Event Details
@@ -428,7 +428,7 @@ function DashboardPage() {
           </Accordion>
           <Accordion open={open === 2}>
             <AccordionHeader
-              className="text-base  px-5"
+              className="text-[14px] px-5"
               onClick={() => handleOpen(2)}
             >
               Events Summary
@@ -439,7 +439,7 @@ function DashboardPage() {
           </Accordion>
           <Accordion open={open === 3}>
             <AccordionHeader
-              className="text-base  px-5"
+              className="text-[14px] px-5"
               onClick={() => handleOpen(3)}
             >
               Overview & Statistic
