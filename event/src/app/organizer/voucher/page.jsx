@@ -8,6 +8,8 @@ import { Divider } from "antd";
 import DatabaseComponent from "@/components/voucher/voucherDb";
 import SidebarComponent from "@/components/sidebar";
 import CreateVoucherComponent from "@/components/voucher/voucherCard";
+import { MdOutlineManageHistory } from "react-icons/md";
+import { TbShoppingCartDiscount } from "react-icons/tb";
 
 function VoucherPage() {
   const [search, setSearch] = useState("");
@@ -54,10 +56,6 @@ function VoucherPage() {
     <>
       <div className="w-full bg-[#F1F1F1]">
         <div className="flex flex-col justify-center  max-w-[1000px] w-full items-center m-auto  ">
-          <div className="w-full text-black font-semibold p-4 text-lg">
-            Organizer Event Management Dashboard
-          </div>
-          <SidebarComponent />
           {/* Search Bar  */}
           <div className="py-5 w-full ">
             <div className="flex px-3 items-center gap-3 border-gray-300 border-b w-72  p-2">
@@ -71,7 +69,10 @@ function VoucherPage() {
               />
             </div>
           </div>
-          <Divider>Voucher Database</Divider>
+          <div className="bg-[#FABB11] font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3 w-full rounded-md ">
+            <MdOutlineManageHistory className="text-[20px]" />
+            Voucher Database
+          </div>
           <table className="w-full">
             <tbody>
               <tr className=" text-[13px] font-normal bg-[#F6F7F8]">
@@ -94,11 +95,14 @@ function VoucherPage() {
             ))}
           </table>
           {/* <div className="mt-3 text-[10px]"> */}
-          <Divider>Voucher Details</Divider>
+          <div className="bg-[#FABB11] mt-8 font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3 w-full rounded-md ">
+            <TbShoppingCartDiscount className="text-[20px]" />
+            Voucher Details
+          </div>
           <CreateVoucherComponent />
-          {/* </div> */}
         </div>
       </div>
+      {/* </div> */}
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
-import { Divider, Table } from "antd";
+import { Table } from "antd";
 import SidebarComponent from "@/components/sidebar";
+import { MdOutlineManageHistory } from "react-icons/md";
 
 // https://ant.design/components/table
 const columns = [
@@ -63,7 +64,10 @@ function TrstionSummaryPage() {
             Organizer Event Management Dashboard
           </div>
           <SidebarComponent />
-          <Divider>Transaction History</Divider>
+          <div className="bg-[#FABB11] font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3 w-full rounded-md ">
+            <MdOutlineManageHistory className="text-[20px]" />
+            Transaction History
+          </div>
           <Table columns={columns} dataSource={data} size="middle" />
           {/* <Divider>Small size table</Divider>
           <Table columns={columns} dataSource={data} size="small" /> */}

@@ -7,6 +7,7 @@ import { LuTicket } from "react-icons/lu";
 import { MdPayment } from "react-icons/md";
 import { useEffect, useRef } from "react";
 import { TbUpload } from "react-icons/tb";
+import { MdOutlineQrCode2 } from "react-icons/md";
 
 // dont forget to write async
 function TransactionPage({ params }) {
@@ -34,7 +35,7 @@ function TransactionPage({ params }) {
     <>
       <div className="bg-[#FABB11] font-semibold text-[18px] py-3 px-5 flex flex-col-2 gap-3">
         <LuTicket className="text-[24px]" />
-        Booking Detail
+        Booking Event Detail
       </div>
       <div className=" items-centers flex flex-col  bg-[#F1F1F1]">
         {/* Buy  */}
@@ -49,11 +50,11 @@ function TransactionPage({ params }) {
                 alt=""
               /> */}
             </div>
-            <div className=" pt-10 flex flex-col gap-4  w-9/12">
+            <div className=" pt-10 flex flex-col gap-2 w-9/12">
               <div className=" font-bold text-2xl">event name</div>
               {/* <div className=" font-bold text-3xl">{event.eventname}</div> */}
               <div className="my-2">
-                <div>start from</div>
+                <div className="text-[12px]">start from</div>
                 <div className="font-semibold text-lg">
                   IDR ticketprice
                   {/* IDR {Number(event?.eventprice).toLocaleString("id-ID")} */}
@@ -78,15 +79,15 @@ function TransactionPage({ params }) {
               </form>
               <div className="font-semibold">About the event</div>
               <hr />
-              <div className="font-semibold">Event Location:</div>
-              <div className=" text-justify text-sm">
+              <div className="font-semibold text-[14px]">Event Location:</div>
+              <div className=" text-justify text-[14px]">
                 {
                   // {event.eventlocation} ||
                   "Location Description"
                 }
               </div>
-              <div className="font-semibold"> Date & Time:</div>
-              <div className=" text-justify text-sm">
+              <div className="font-semibold text-[14px]"> Date & Time:</div>
+              <div className=" text-justify text-[14px]">
                 {
                   // {event.eventdate} ||
                   "startdate & enddate"
@@ -99,7 +100,7 @@ function TransactionPage({ params }) {
         <div className="flex flex-col p-8 gap-14 ">
           {/* Form Promo */}
           <div>
-            <div className=" bg-[#FABB11] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+            <div className=" bg-red-500 flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
               <TbDiscount2 className="text-[26px]" /> Apply promo before
               check-out
             </div>
@@ -124,35 +125,96 @@ function TransactionPage({ params }) {
           </div>
           {/* Apply Referal Code */}
           <div>
-            <div className=" bg-[#FABB11] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
-              <TbDiscount2 className="text-[26px]" /> Apply referal code
+            <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+              <MdOutlineQrCode2 className="text-[26px]" /> Apply referal code
             </div>
             <div className="bg-white p-3">
               <form action="" className="flex gap-3" id="form">
-                <div className="h-[40px] text-[12.5px] w-[168px]">
-                  <DropDown
-                    // label="Select an option"
-                    options={options}
-                    selected={selectedOption}
-                    onChange={handleChange}
-                  />
-                </div>
+                <input
+                  type="text"
+                  placeholder="Referal Code"
+                  className="h-[40px] mt-1 text-[12.5px] border w-[142px] rounded-lg"
+                  required
+                  id="referalcode"
+                  // value={formik.values.eventname}
+                  // onChange={(e) => {
+                  //   formik.setFieldValue("referalcode", e.target.value);
+                  // }}
+                />
                 <button
                   type="submit"
                   className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
                 >
-                  Apply
+                  Use
                 </button>
               </form>
             </div>
           </div>
           {/* Payment */}
           <div>
-            <div className=" bg-[#FABB11] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+            <div className=" bg-[#FABB11] flex flex-col-3 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
               <MdPayment className="text-[22px]" /> Payment Summary
             </div>
-            <div className="bg-white p-3 flex flex-col">
-              <div className=" text-[12.5px]">Upload proof of payment here</div>
+            {/* Content */}
+            <div className="bg-white p-3 flex flex-col gap-1">
+              {/* Subtotal Ticket Price */}
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  Subtotal Ticket Price:
+                </div>
+                <div className=" text-justify text-[14px] px-3">
+                  {
+                    // {event.eventprice} * {quantity} ||
+                    "IDR eventprice"
+                  }
+                </div>
+              </div>
+              {/* Referal */}
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  {" "}
+                  Referal Discount:
+                </div>
+                <div className=" text-justify text-[14px] px-2">
+                  {
+                    // {referaldiscount} ||
+                    "IDR referal"
+                  }
+                </div>
+              </div>
+              {/* Promo */}
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  {" "}
+                  Promo Discount:
+                </div>
+                <div className=" text-justify text-[14px] px-2">
+                  {
+                    // {voucherdiscount} ||
+                    "IDR discount"
+                  }
+                </div>
+              </div>
+              {/* Total Payment */}
+
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  {" "}
+                  Total Payment:
+                </div>
+                <div className=" text-justify text-[14px] px-2">
+                  {
+                    // {subtotal_ticket_price} - {referaldiscount}- {voucherdiscount} ||
+                    "IDR payment"
+                  }
+                </div>
+              </div>
+            </div>
+            {/* Upload Bukti Transfer */}
+            <div className="bg-white p-5 flex flex-col">
+              <div className=" text-[12.5px] font-semibold">
+                Upload proof of payment here
+              </div>
               <form action="" className="flex gap-3" id="form">
                 <input
                   type="file"
