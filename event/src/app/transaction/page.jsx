@@ -1,92 +1,253 @@
-import { axiosInstanceSSR } from "../../axios/axios";
+"use client";
+import { axiosInstanceSSR } from "@/axios/axios";
+import React, { useState } from "react";
+import DropDown from "../../components/dropdown";
+import { TbDiscount2 } from "react-icons/tb";
+import { LuTicket } from "react-icons/lu";
+import { MdPayment } from "react-icons/md";
+import { useEffect, useRef } from "react";
+import { TbUpload } from "react-icons/tb";
+import { MdOutlineQrCode2 } from "react-icons/md";
 
-export const metadata = {
-  title: "Event",
-  description: "Event Transaction",
-};
-
+// dont forget to write async
 function TransactionPage({ params }) {
-  // const { eventId } = params;
+  const { eventId } = params;
 
-  // const event = ( await axiosInstanceSSR().get("/events/" + eventId)).data.result;
+  // const event = (await axiosInstanceSSR().get("/events/" + eventId)).data
+  //   .result;
   // console.log(event);
+
+  const options = [
+    { value: "option1", label: "Independence45" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
+  ];
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleChange = (e) => {
+    setSelectedOption(e.target.value);
+  };
+
+  const upload = useRef(null);
 
   return (
     <>
-      <div>Transaction</div>
-      <div className=" items-centers flex flex-col bg-blue-400">
-        {/* Booking */}
-        <div class="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg p-3">
-          <div class="relative mx-4 mt-4 overflow-hidden text-white shadow-lg rounded-xl bg-blue-gray-500 bg-clip-border shadow-blue-gray-500/40">
-            <img
-              src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1470&amp;q=80"
-              alt="ui/ux review check"
-            />
-            <div class="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60"></div>
-            <button
-              class="!absolute  top-4 right-4 h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-full text-center align-middle font-sans text-xs font-medium uppercase text-red-500 transition-all hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              type="button"
-            >
-              <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  class="w-6 h-6"
-                >
-                  <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"></path>
-                </svg>
-              </span>
-            </button>
-          </div>
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-3">
-              <h5 class="block font-sans text-xl antialiased font-medium leading-snug tracking-normal text-blue-gray-900">
-                Wooden House, Florida
-              </h5>
-              <p class="flex items-center gap-1.5 font-sans text-base font-normal leading-relaxed text-blue-gray-900 antialiased">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  class="-mt-0.5 h-5 w-5 text-yellow-700"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                5.0
-              </p>
+      <div className="bg-[#FABB11] font-semibold text-[18px] py-3 px-5 flex flex-col-2 gap-3">
+        <LuTicket className="text-[24px]" />
+        Booking Event Detail
+      </div>
+      <div className=" items-centers flex flex-col  bg-[#F1F1F1]">
+        {/* Buy  */}
+        <div className="flex flex-col justify-center max-w-screen-2xl w-full items-center m-auto ">
+          <div className="grid max-w-screen-2xl  md:grid-cols-2 p-7 gap-3 w-full  sm:grid-cols-1">
+            <div className="m-auto ">
+              {" "}
+              event image here
+              {/* <img
+                className=" max-w-[734px]  max-h-[523px]"
+                // src={process.env.API_URL + product.image_url}
+                alt=""
+              /> */}
             </div>
-
-            <div class="py-6">
-              <div class="flex items-center justify-between mb-2">
-                <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-                  Apple AirPods
-                </p>
-                <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
-                  $95.00
-                </p>
+            <div className=" pt-10 flex flex-col gap-2 w-9/12">
+              <div className=" font-bold text-2xl">event name</div>
+              {/* <div className=" font-bold text-3xl">{event.eventname}</div> */}
+              <div className="my-2">
+                <div className="text-[12px]">start from</div>
+                <div className="font-semibold text-lg">
+                  IDR ticketprice
+                  {/* IDR {Number(event?.eventprice).toLocaleString("id-ID")} */}
+                </div>
               </div>
-              <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
-                With plenty of talk and listen time, voice-activated Siri
-                access, and an available wireless charging case.
-              </p>
-            </div>
-            <div class="py-6 pt-0">
-              <button
-                class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg shadow-gray-900/10 hover:shadow-gray-900/20 focus:opacity-[0.85] active:opacity-[0.85] active:shadow-none block w-full bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-                type="button"
-              >
-                Book
-              </button>
+
+              <form action="" className="flex gap-3" id="form">
+                <input
+                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] p-5 rounded-lg text-center"
+                  type="number"
+                  min={1}
+                  placeholder="Quantity"
+                  required
+                  id="qty"
+                ></input>
+                <button
+                  type="submit"
+                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+                >
+                  Buy
+                </button>
+              </form>
+              <div className="font-semibold">About the event</div>
+              <hr />
+              <div className="font-semibold text-[14px]">Event Location:</div>
+              <div className=" text-justify text-[14px]">
+                {
+                  // {event.eventlocation} ||
+                  "Location Description"
+                }
+              </div>
+              <div className="font-semibold text-[14px]"> Date & Time:</div>
+              <div className=" text-justify text-[14px]">
+                {
+                  // {event.eventdate} ||
+                  "startdate & enddate"
+                }
+              </div>
             </div>
           </div>
         </div>
-        {/* Promotion & Payment */}
-        <div>testing</div>
+        {/* Voucher */}
+        <div className="flex flex-col p-8 gap-14 ">
+          {/* Form Promo */}
+          <div>
+            <div className=" bg-red-500 flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+              <TbDiscount2 className="text-[26px]" /> Apply promo before
+              check-out
+            </div>
+            <div className="bg-white p-3">
+              <form action="" className="flex gap-3" id="form">
+                <div className="h-[40px] text-[12.5px] w-[168px]">
+                  <DropDown
+                    // label="Select an option"
+                    options={options}
+                    selected={selectedOption}
+                    onChange={handleChange}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+                >
+                  Apply
+                </button>
+              </form>
+            </div>
+          </div>
+          {/* Apply Referal Code */}
+          <div>
+            <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+              <MdOutlineQrCode2 className="text-[26px]" /> Apply referal code
+            </div>
+            <div className="bg-white p-3">
+              <form action="" className="flex gap-3" id="form">
+                <input
+                  type="text"
+                  placeholder="Referal Code"
+                  className="h-[40px] mt-1 text-[12.5px] border w-[142px] rounded-lg"
+                  required
+                  id="referalcode"
+                  // value={formik.values.eventname}
+                  // onChange={(e) => {
+                  //   formik.setFieldValue("referalcode", e.target.value);
+                  // }}
+                />
+                <button
+                  type="submit"
+                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+                >
+                  Use
+                </button>
+              </form>
+            </div>
+          </div>
+          {/* Payment */}
+          <div>
+            <div className=" bg-[#FABB11] flex flex-col-3 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+              <MdPayment className="text-[22px]" /> Payment Summary
+            </div>
+            {/* Content */}
+            <div className="bg-white p-3 flex flex-col gap-1">
+              {/* Subtotal Ticket Price */}
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  Subtotal Ticket Price:
+                </div>
+                <div className=" text-justify text-[14px] px-3">
+                  {
+                    // {event.eventprice} * {quantity} ||
+                    "IDR eventprice"
+                  }
+                </div>
+              </div>
+              {/* Referal */}
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  {" "}
+                  Referal Discount:
+                </div>
+                <div className=" text-justify text-[14px] px-2">
+                  {
+                    // {referaldiscount} ||
+                    "IDR referal"
+                  }
+                </div>
+              </div>
+              {/* Promo */}
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  {" "}
+                  Promo Discount:
+                </div>
+                <div className=" text-justify text-[14px] px-2">
+                  {
+                    // {voucherdiscount} ||
+                    "IDR discount"
+                  }
+                </div>
+              </div>
+              {/* Total Payment */}
+
+              <div className=" flex flex-col-2 justify-between">
+                <div className="font-semibold text-[14px] px-2">
+                  {" "}
+                  Total Payment:
+                </div>
+                <div className=" text-justify text-[14px] px-2">
+                  {
+                    // {subtotal_ticket_price} - {referaldiscount}- {voucherdiscount} ||
+                    "IDR payment"
+                  }
+                </div>
+              </div>
+            </div>
+            {/* Upload Bukti Transfer */}
+            <div className="bg-white p-5 flex flex-col">
+              <div className=" text-[12.5px] font-semibold">
+                Upload proof of payment here
+              </div>
+              <form action="" className="flex gap-3" id="form">
+                <input
+                  type="file"
+                  placeholder=" Poster Url"
+                  className="border p-1 text-[12.5px] text-black rounded-md  w-96 hidden"
+                  id="eventposter"
+                  onChange={(e) => renderFile(e)}
+                  ref={upload}
+                />
+                <button
+                  className="bg-full bg-[#FADB7A] h-[40px] mt-1 text-[12.5px] border w-[128px] text-black px-3  w-38 flex gap-2
+            items-center
+           rounded-md "
+                  type="button"
+                  onClick={() => {
+                    upload.current.click();
+                  }}
+                >
+                  <TbUpload />
+                  Payment
+                </button>
+
+                <button
+                  type="submit"
+                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+                >
+                  Upload
+                </button>
+              </form>
+            </div>
+          </div>
+          {/* ClosingTag */}
+        </div>
       </div>{" "}
     </>
   );
