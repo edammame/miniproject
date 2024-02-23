@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
 import { axiosInstance } from "@/axios/axios";
@@ -10,6 +11,7 @@ import SidebarComponent from "@/components/sidebar";
 import CreateVoucherComponent from "@/components/voucher/voucherCard";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { TbShoppingCartDiscount } from "react-icons/tb";
+import { MdOutlineQrCode2 } from "react-icons/md";
 
 function VoucherPage() {
   const [search, setSearch] = useState("");
@@ -55,6 +57,20 @@ function VoucherPage() {
   return (
     <>
       <div className="w-full bg-[#F1F1F1]">
+        <div className=" bg-[#6CBF67] flex flex-col-2 font-semibold text-[16px] py-3 justify-between gap-2 px-4">
+          <div className="flex flex-col-2 gap-2 ">
+            <MdOutlineQrCode2 className="text-[26px]" /> Create New Promotion
+            Voucher
+          </div>
+          <div>
+            <Link
+              href="/organizer/dashboard"
+              className=" text-[12.5px] w-[128px] h-[40px] px-10 py-2.5 border rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+            >
+              Back to Event
+            </Link>
+          </div>
+        </div>
         <div className="flex flex-col justify-center  max-w-[1000px] w-full items-center m-auto  ">
           {/* Search Bar  */}
           <div className="py-5 w-full ">

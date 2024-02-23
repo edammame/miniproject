@@ -7,7 +7,6 @@ import { LuTicket } from "react-icons/lu";
 import { MdPayment } from "react-icons/md";
 import { useEffect, useRef } from "react";
 import { TbUpload } from "react-icons/tb";
-import { MdOutlineQrCode2 } from "react-icons/md";
 
 // dont forget to write async
 function TransactionPage({ params }) {
@@ -123,33 +122,7 @@ function TransactionPage({ params }) {
               </form>
             </div>
           </div>
-          {/* Apply Referal Code */}
-          <div>
-            <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
-              <MdOutlineQrCode2 className="text-[26px]" /> Apply referal code
-            </div>
-            <div className="bg-white p-3">
-              <form action="" className="flex gap-3" id="form">
-                <input
-                  type="text"
-                  placeholder="Referal Code"
-                  className="h-[40px] mt-1 text-[12.5px] border w-[142px] rounded-lg"
-                  required
-                  id="referalcode"
-                  // value={formik.values.eventname}
-                  // onChange={(e) => {
-                  //   formik.setFieldValue("referalcode", e.target.value);
-                  // }}
-                />
-                <button
-                  type="submit"
-                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
-                >
-                  Use
-                </button>
-              </form>
-            </div>
-          </div>
+
           {/* Payment */}
           <div>
             <div className=" bg-[#FABB11] flex flex-col-3 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">

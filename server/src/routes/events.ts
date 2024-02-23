@@ -4,3 +4,15 @@ import { eventController } from "../controllers/events";
 export const route: Router = express.Router();
 route.get("/events/", eventController.getEvents);
 route.get("/events/:id", eventController.getEvents);
+
+route.post(
+  "/",
+  // verifyUser,
+  // verifyAdmin,
+  // fileUploader({
+  //   destinationFolder: "/images/product_images",
+  //   prefix: "PRODUCT",
+  //   filetype: "image",
+  // }).single("image"),
+  eventController.addEvent
+);

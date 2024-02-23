@@ -7,6 +7,9 @@ import { FaArrowRight } from "react-icons/fa";
 import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
 import { IoSearch } from "react-icons/io5";
+import Link from "next/link";
+import { HiOutlinePlusCircle } from "react-icons/hi";
+import { MdOutlineQrCode2 } from "react-icons/md";
 import {
   Accordion,
   AccordionHeader,
@@ -314,115 +317,6 @@ function DashboardPage() {
               New Event Details
             </AccordionHeader>
             <AccordionBody>
-              {/* <div className="w-full py-3">
-                <form id="form" action="" onSubmit={formik.handleSubmit}>
-                  <h1 className="font-semibold text-base text-black py-2">
-                    Add Event Information Details
-                  </h1>
-                  <div className="flex flex-col gap-1 text-black  font-normal">
-                    <table>
-                      <tr>
-                        <td className="px-2 "> Event Name</td>
-                        <td>
-                          <input
-                            type="text"
-                            placeholder=" Event Name"
-                            className="border border-gray-300 p-1 text-[14px] text-gray-300 rounded-md w-96 "
-                            required
-                            id="eventname"
-                            // value={formik.values.eventname}
-                            onChange={formik.handleChange}
-                            // onChange={(e) => {
-                            //   formik.setFieldValue("product_name", e.target.value);
-                            // }}
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-2 "> Event Poster</td>
-                        <td>
-                          <input
-                            type="file"
-                            placeholder=" Poster Url"
-                            className="border p-1 text-[14px] text-black rounded-md  w-96 hidden"
-                            id="eventposter"
-                            onChange={(e) => renderFile(e)}
-                            ref={upload}
-                          />
-                          <button
-                            className="bg-full bg-[#FADB7A] text-[14px] text-black px-3 h-8 w-38 flex gap-2
-                          items-center
-                         rounded-md "
-                            type="button"
-                            onClick={() => {
-                              upload.current.click();
-                            }}
-                          >
-                            <TbUpload />
-                            Click to Upload File
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-2 "> Event Ticket Price</td>
-                        <td>
-                          <input
-                            type="number"
-                            placeholder=" Ticket Price"
-                            className="border border-gray-300 p-1 text-[14px] text-gray-300 rounded-md w-96"
-                            min={0}
-                            required
-                            id="price"
-                            // value={formik.values.eventprice}
-                            onChange={formik.handleChange}
-                          />
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td className="px-2 "> Event Description</td>
-                        <td>
-                          <textarea
-                            type="text"
-                            placeholder=" Event description"
-                            className="border border-gray-300 text-[14px] text-gray-300 rounded-md p-1 w-96"
-                            required
-                            // value={formik.values.eventdescription}
-                            id="eventdescription"
-                            onChange={formik.handleChange}
-                          />
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td className="px-2 "> Event Date</td>
-                        <td>
-                          <RangePicker
-                            // value={formik.values.eventdate}
-                            // disabledDate = {disabledDate}
-                            showTime
-                            onChange={(e) => setDate(e.target.value)}
-                          />
-                        </td>
-                      </tr>
-                    </table>
-                    <tr className="flex gap-2">
-                      <button
-                        className=" bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
-                        type="submit"
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="bg-[#FADB7A] hover:bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
-                        onClick={() => formik.resetForm()}
-                      >
-                        Reset
-                      </button>
-                    </tr>
-                  </div>
-                </form>
-              </div> */}
               <AddEventComponent />
             </AccordionBody>
           </Accordion>
@@ -431,10 +325,29 @@ function DashboardPage() {
               className="text-[14px] px-5"
               onClick={() => handleOpen(2)}
             >
-              Events Summary
+              Voucher Details
             </AccordionHeader>
             <AccordionBody>
-              event by category & event by location will shown here
+              <div className="">
+                {/* Add New Voucher */}
+                <div>
+                  <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+                    <MdOutlineQrCode2 className="text-[26px]" /> Create New
+                    Voucher Promotion
+                  </div>
+                  <div className="bg-white p-4 flex flex-col gap-3">
+                    <div className=" text-[12.5px] font-semibold">
+                      Create promotion voucher for your future event
+                    </div>
+                    <Link
+                      href="/organizer/voucher"
+                      className=" text-[12.5px] w-[128px] h-[40px] px-10 py-2.5 border rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+                    >
+                      Create
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </AccordionBody>
           </Accordion>
           <Accordion open={open === 3}>

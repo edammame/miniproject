@@ -15,12 +15,11 @@ function AddEventComponent() {
     eventposter: null,
     eventdescription: "",
     eventtype: "",
-    eventstatus: "",
-    eventlocation: "",
+    location_id: "",
     voucherid: 0,
     availableseat: 0,
     reservedseat: "",
-    id: 0,
+    eventid: 0,
   };
   const upload = useRef(null);
 
@@ -40,7 +39,7 @@ function AddEventComponent() {
     const event = res.data.result;
     formik.setFieldValue("id", event.id);
     formik.setFieldValue("eventname", event.eventname);
-    formik.setFieldValue("eventlocation", event.eventlocation);
+    formik.setFieldValue("eventlocation", event.location_id);
     formik.setFieldValue("eventposter", event.eventposter);
     formik.setFieldValue("eventprice", event.eventprice);
     formik.setFieldValue("eventdescription", event.eventdescription);
@@ -97,7 +96,7 @@ function AddEventComponent() {
           console.log(err);
         });
     }
-    formik.resetForm();
+    // formik.resetForm();
   };
 
   return (
