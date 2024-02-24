@@ -104,7 +104,7 @@ export const eventController = {
 
   //create event category
   //  const event =  await prisma.eventDetail.create({
-  //     data: newEvent,
+  //     data: newCategory,
   //   });
 
   //   await prisma.eventCategory.create({

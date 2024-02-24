@@ -1,6 +1,6 @@
 "use client";
 import { axiosInstance, axiosInstanceSSR } from "../../axios/axios";
-import { useFormik } from "formik";
+import { FieldArray, useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { TbUpload } from "react-icons/tb";
 import { DatePicker } from "antd";
@@ -188,7 +188,12 @@ function AddEventComponent({ editId, fetchEvents }) {
                 <td>
                   {/* dropdown */}
                   <div className="w-64 text-[12.5px] font-normal bg-white">
-                    <Select label="Event Type">
+                    <Select
+                      label="Event Type"
+                      name="eventtype"
+                      value={formik.values.eventtype}
+                      onChange={formik.handleChange}
+                    >
                       <Option>Free</Option>
                       <Option>Paid</Option>
                     </Select>

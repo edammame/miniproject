@@ -15,15 +15,15 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 app.use(
-  "/public/products",
-  express.static(`${__dirname}/public/images/product_images`)
+  "/public/event",
+  express.static(`${__dirname}/public/images/event_images`)
 );
 
 const PORT = process.env.PORT;
 
 //routes
 app.use("/events", routes.eventRoutes);
-// app.use("/organizers", routes.organizerRoutes);
+app.use("/vouchers", routes.voucherRoutes);
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ message: error.message || "internal server error" });

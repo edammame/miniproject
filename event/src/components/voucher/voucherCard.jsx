@@ -12,14 +12,15 @@ function CreateVoucherComponent() {
     vouchername: "",
     voucherpromodesc: "",
     discount: 0,
-    voucherstartdate: "",
-    voucherenddate: "",
+    voucherstartdate: new Date(),
+    voucherenddate: new Date(),
+    stock: 0,
   };
 
   const formik = useFormik({
     initialValues: initialVoucher,
     onSubmit: () => {
-      console.log("test submit formik");
+      console.log("test onsubmit formik");
       simpan();
     },
   });
@@ -30,15 +31,16 @@ function CreateVoucherComponent() {
 
   const simpan = () => {
     const form = new FormData();
-    form.append("vouchercode", formik.values.vouchercode);
+    form.append("voucherid", formik.values.voucherid);
     form.append("voucherpromodesc", formik.values.voucherpromodesc);
     form.append("discount", formik.values.discount);
     form.append("voucherstartdate", formik.values.voucherstartdate);
     form.append("voucherenddate", formik.values.voucherenddate);
+    form.append("stock", formik.values.stock);
 
     if (formik.values.id) {
       axiosInstance()
-        .patch("/vouchers/" + formik.values.id, form)
+        .patch("/voucher/" + formik.values.id, form)
         .then(() => {
           alert("data voucher berhasil diedit");
           fetchVouchers();
@@ -47,9 +49,8 @@ function CreateVoucherComponent() {
           console.log(err);
         });
     } else {
-      axiosInstance();
       axiosInstance()
-        .post("/vouchers/", form)
+        .post("/voucher/", form)
         .then(() => {
           alert("data voucher berhasil ditambahkan");
           fetchVouchers();
@@ -90,13 +91,12 @@ function CreateVoucherComponent() {
                     Promo Description
                   </td>
                   <td>
-                    {" "}
-                    <textarea
+                    <input
                       type="text"
                       placeholder="voucher description"
                       className="border border-gray-300 text-[12.5px] text-black rounded-md  min-w-64"
                       required
-                      id="voucherdescription"
+                      id="voucherpromodesc"
                       value={formik.values.voucherpromodesc}
                       onChange={formik.handleChange}
                     />
