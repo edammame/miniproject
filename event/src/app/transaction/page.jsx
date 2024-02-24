@@ -32,8 +32,8 @@ function TransactionPage({ params }) {
 
   return (
     <>
-      <div className="bg-[#FABB11] font-semibold text-[18px] py-3 px-5 flex flex-col-2 gap-3">
-        <LuTicket className="text-[24px]" />
+      <div className="bg-[#FABB11] fixed w-full font-semibold text-[18px] py-3 px-5 flex flex-col-2 gap-3">
+        <LuTicket className="text-[24px] " />
         Booking Event Detail
       </div>
       <div className=" items-centers flex flex-col  bg-[#F1F1F1]">

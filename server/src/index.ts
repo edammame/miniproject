@@ -3,13 +3,21 @@
 import express, { Application, Response, Request, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import { routes } from "./routes";
+import { config } from "dotenv";
+import cors from "cors";
 
+config();
 export const prisma = new PrismaClient();
 
 // export const secretKey = String(process.env.secretKey);
 
 const app: Application = express();
 app.use(express.json());
+app.use(cors());
+app.use(
+  "/public/products",
+  express.static(`${__dirname}/public/images/product_images`)
+);
 
 const PORT = process.env.PORT;
 

@@ -57,6 +57,7 @@ function VoucherPage() {
   return (
     <>
       <div className="w-full bg-[#F1F1F1]">
+        {/* Headers */}
         <div className=" bg-[#6CBF67] flex flex-col-2 font-semibold text-[16px] py-3 justify-between gap-2 px-4">
           <div className="flex flex-col-2 gap-2 ">
             <MdOutlineQrCode2 className="text-[26px]" /> Create New Promotion
@@ -67,7 +68,7 @@ function VoucherPage() {
               href="/organizer/dashboard"
               className=" text-[12.5px] w-[128px] h-[40px] px-10 py-2.5 border rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
             >
-              Back to Event
+              Done
             </Link>
           </div>
         </div>

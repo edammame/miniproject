@@ -2,14 +2,19 @@
 import React from "react";
 // import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
+
 import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
 import { IoSearch } from "react-icons/io5";
 import Link from "next/link";
-import { HiOutlinePlusCircle } from "react-icons/hi";
+
+// ReactIcons
+import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
+import { FiDelete } from "react-icons/fi";
 import { MdOutlineQrCode2 } from "react-icons/md";
+
 import {
   Accordion,
   AccordionHeader,
@@ -23,10 +28,10 @@ import {
   CardBody,
   Chip,
   CardFooter,
-  Avatar,
   IconButton,
   Tooltip,
   Input,
+  ThemeProvider,
 } from "@material-tailwind/react";
 import AddEventComponent from "../../../components/organizer/organizerCard";
 import SidebarComponent from "@/components/sidebar";
@@ -37,6 +42,7 @@ function DashboardPage() {
   }
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
+  const [editId, setEditId] = useState(0);
 
   const [value] = useDebounce(search, 500);
 
@@ -49,13 +55,7 @@ function DashboardPage() {
   {
     /* Table*/
   }
-  const tableHead = [
-    "Event Name",
-    "Ticket Price",
-    "Date-Time",
-    "Status",
-    "Location",
-  ];
+  const tableHead = ["Event Name", "Ticket Price", "Time", "Type", "Location"];
 
   {
     /* Formik*/
@@ -111,32 +111,28 @@ function DashboardPage() {
             </div>
           </div>
 
+          <div className=" bg-[#FABB11] flex flex-col-2 font-semibold text-[16px] py-3 justify-between gap-2 px-4 w-full rounded-md">
+            <div className="flex flex-col-2 gap-2 text-[16px]">
+              <MdOutlineQrCode2 className="text-[26px]" />
+              Event Last Added
+            </div>
+          </div>
+
           {/* /Trial: https://www.material-tailwind.com/docs/react/table */}
-          <Card className="h-full w-full ">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
-              <div className=" flex flex-col justify-between gap-3 md:flex-row md:items-center">
-                <div>
-                  <Typography
-                    className=" text-[14px] font-semibold"
-                    color="blue-gray"
-                  >
-                    Event Last Added
-                  </Typography>
-                  <Typography color="gray" className="mt-1 text-[11px] ">
-                    These are list of event details that are added to the
-                    database
-                  </Typography>
-                </div>
-              </div>
-            </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-              <table className="w-full min-w-max table-auto text-left">
+          <Card className="h-full w-full items-center">
+            <CardHeader
+              floated={false}
+              shadow={false}
+              className="rounded-none "
+            ></CardHeader>
+            <CardBody className="overflow-scroll">
+              <table className="w-full min-w-max table-auto">
                 <thead>
                   <tr>
                     {tableHead.map((head) => (
                       <th
                         key={head}
-                        className="border-y   border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
+                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
                       >
                         <Typography
                           variant="small"
@@ -153,10 +149,11 @@ function DashboardPage() {
                   {events.map(
                     (
                       {
+                        eventid,
                         eventname,
                         eventprice,
                         eventdate,
-                        eventstatus,
+                        eventtype,
                         eventlocation,
                         voucherid,
                       },
@@ -164,17 +161,17 @@ function DashboardPage() {
                     ) => {
                       const isLast = index === events.length - 1;
                       const classes = isLast
-                        ? "p-4"
-                        : "p-4 border-b border-blue-gray-50";
+                        ? "p-2 text-center justify-items-center "
+                        : "p-2 border-b border-blue-gray-50 justify-items-center text-center";
 
                       return (
                         <tr key={eventname}>
                           <td className={classes}>
-                            <div className="flex items-center gap-2">
+                            <div className="flex text-left">
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="font-bold"
+                                className=" font-normal text-[12px] px-1"
                               >
                                 {eventname}
                               </Typography>
@@ -203,13 +200,14 @@ function DashboardPage() {
                               <Chip
                                 size="sm"
                                 variant="ghost"
-                                value={eventstatus}
+                                value={eventtype}
+                                className=" justify-items-center w-[80px]"
                                 color={
-                                  eventstatus === "available"
+                                  eventtype === "free"
                                     ? "green"
-                                    : eventstatus === "fully booked"
-                                    ? "amber"
-                                    : "red"
+                                    : eventtype === "paid"
+                                    ? "blue"
+                                    : "yellow"
                                 }
                               />
                             </div>
@@ -223,26 +221,27 @@ function DashboardPage() {
                               {eventlocation}
                             </Typography>
                           </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {voucherid}
-                            </Typography>
-                          </td>
 
-                          <td className={classes}>
+                          <td className="flex flex-col-2">
                             <Tooltip content="Edit Database">
-                              <IconButton variant="text" onClick={ubah}>
-                                Edit
-                              </IconButton>
+                              <button
+                                className=" text-gray-600 text-[16px] p-2"
+                                onClick={() => {
+                                  setEditId(eventid);
+                                }}
+                              >
+                                <FaRegEdit />
+                                {/* Edit */}
+                              </button>
                             </Tooltip>
                             <Tooltip content="Delete Database">
-                              <IconButton variant="text" onClick={hapus}>
-                                Delete
-                              </IconButton>
+                              <button
+                                className=" text-gray-600 text-[18px] p-2"
+                                onClick={hapus}
+                              >
+                                <FiDelete />
+                                {/* Delete */}
+                              </button>
                             </Tooltip>
                           </td>
                         </tr>
@@ -284,31 +283,6 @@ function DashboardPage() {
               </button>
             </CardFooter>
           </Card>
-
-          {/* Event List */}
-          {/* <div className="text-left text-black font-semibold py-3  w-full">
-            {" "}
-            Event Database
-          </div>
-          <table className="w-full">
-            <tr className=" text-center text-black text-[14px] font-semibold">
-              <th>Event Poster</th>
-              <th>Event Name</th>
-              <th>Event Ticket Price</th>
-            </tr>
-            {events.map((event, key) => (
-              <OrganizerProductCard
-                {...event}
-                key={key}
-                ubah={() => ubah(event.id)}
-                hapus={() => hapus(event.id)}
-              />
-            ))}
-          </table>
-           */}
-
-          {/* Accordion*/}
-
           <Accordion open={open === 1} className="mt-14 px-5">
             <AccordionHeader
               className="text-[14px]"
@@ -317,7 +291,7 @@ function DashboardPage() {
               New Event Details
             </AccordionHeader>
             <AccordionBody>
-              <AddEventComponent />
+              <AddEventComponent editId={editId} fetchEvents={fetchEvents} />
             </AccordionBody>
           </Accordion>
           <Accordion open={open === 2}>

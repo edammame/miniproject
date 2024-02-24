@@ -1,17 +1,19 @@
 "use client";
-import { axiosInstance } from "../../axios/axios";
+import { axiosInstance, axiosInstanceSSR } from "../../axios/axios";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 import { TbUpload } from "react-icons/tb";
 import { DatePicker } from "antd";
 import { Select, Option } from "@material-tailwind/react";
+import moment from "moment/moment";
+import dayjs from "dayjs";
 
-function AddEventComponent() {
+function AddEventComponent({ editId, fetchEvents }) {
   const intialEvent = {
     eventname: "",
     eventprice: 0,
-    starteventdate: "",
-    endeventdate: "",
+    starteventdate: new Date(),
+    endeventdate: new Date(),
     eventposter: null,
     eventdescription: "",
     eventtype: "",
@@ -36,18 +38,30 @@ function AddEventComponent() {
 
   const ubah = async (id) => {
     const res = await axiosInstance().get("/events/" + id);
+    console.log(res.data);
     const event = res.data.result;
-    formik.setFieldValue("id", event.id);
+    formik.setFieldValue("id", event.eventid);
     formik.setFieldValue("eventname", event.eventname);
     formik.setFieldValue("eventlocation", event.location_id);
     formik.setFieldValue("eventposter", event.eventposter);
     formik.setFieldValue("eventprice", event.eventprice);
     formik.setFieldValue("eventdescription", event.eventdescription);
-    // formik.setFieldValue("eventdate", event.eventdate);
-    // formik.setFieldValue("eventdate", event.eventdate);
+    formik.setFieldValue(
+      "eventstartdate",
+      moment(event.eventstartdate).format("YYYY-MM-DD hh:mm:ss")
+    );
+    formik.setFieldValue(
+      "eventenddate",
+      moment(event.eventenddate).format("YYYY-MM-DD hh:mm:ss")
+    );
     formik.setFieldValue("eventtype", event.eventtype);
     formik.setFieldValue("availableseat", event.availableseat);
   };
+
+  useEffect(() => {
+    if (editId) ubah(editId);
+  }, [editId]);
+
   const { RangePicker } = DatePicker;
   // https://ant.design/components/date-picker#components-date-picker-demo-disabled-date
 
@@ -85,9 +99,8 @@ function AddEventComponent() {
           console.log(err);
         });
     } else {
-      axiosInstance();
-      axiosInstance()
-        .post("/events/", form)
+      axiosInstanceSSR()
+        .post("/events", form)
         .then(() => {
           alert("data berhasil ditambahkan");
           fetchEvents();
@@ -101,7 +114,6 @@ function AddEventComponent() {
 
   return (
     <div>
-      {" "}
       {/* <div className="w-full py-3"> */}
       <form id="form" action="" onSubmit={formik.handleSubmit}>
         `{" "}
@@ -226,14 +238,37 @@ function AddEventComponent() {
                   <RangePicker
                     // value={formik.values.eventdate}
                     // disabledDate = {disabledDate}
+                    // showTime={{ format: "HH:mm" }}
+                    showTime={{
+                      hideDisabledOptions: true,
+                      defaultValue: [
+                        dayjs("00:00:00", "HH:mm:ss"),
+                        dayjs("11:59:59", "HH:mm:ss"),
+                      ],
+                    }}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    // format="YYYY-MM-DD HH:mm"
                     className="min-w-64"
-                    showTime
                     onChange={(e) => {
+                      console.log(e);
                       //   console.log(e[0].$d);
                       //   console.log(e[1].$d);
-                      formik.setFieldValue("starteventdate", e[0].$d);
-                      formik.setFieldValue("endeventdate", e[1].$d);
+                      // formik.setFieldValue("starteventdate", e[0].$d);
+                      // formik.setFieldValue("endeventdate", e[1].$d);
                     }}
+                    value={[
+                      dayjs(formik.values.starteventdate),
+                      dayjs(formik.values.endeventdate),
+                    ]}
+
+                    // pickerValue={[
+                    //   moment().format("YYYY-MM-DD hh:mm"),
+                    //   moment().format("YYYY-MM-DD hh:mm"),
+                    // ]}
+                    // defaultValue={[
+                    //   moment(formik.values.starteventdate),
+                    //   moment(formik.values.endeventdate),
+                    // ]}
                   />
                 </td>
               </tr>

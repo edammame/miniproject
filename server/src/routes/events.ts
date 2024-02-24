@@ -1,18 +1,19 @@
 import express, { Router } from "express";
 import { eventController } from "../controllers/events";
+import { fileUploader } from "../middlewares/multer";
 
 export const route: Router = express.Router();
-route.get("/events/", eventController.getEvents);
-route.get("/events/:id", eventController.getEvents);
+route.get("/", eventController.getEvents);
+route.get("/:eventid", eventController.getEventById);
 
 route.post(
   "/",
   // verifyUser,
   // verifyAdmin,
-  // fileUploader({
-  //   destinationFolder: "/images/product_images",
-  //   prefix: "PRODUCT",
-  //   filetype: "image",
-  // }).single("image"),
+  fileUploader({
+    destinationFolder: "/images/event_images",
+    prefix: "EVENT",
+    filetype: "image",
+  }).single("image"),
   eventController.addEvent
 );

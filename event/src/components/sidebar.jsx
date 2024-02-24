@@ -9,7 +9,7 @@ function SidebarComponent() {
           href="/organizer/home"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
-          Home
+          Profile
         </Link>
         <Link
           href="/organizer/dashboard"
@@ -18,13 +18,13 @@ function SidebarComponent() {
           Event
         </Link>
         <Link
-          href="/organizer/transaction"
+          href="/organizer/history"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
-          Transaction
+          History
         </Link>
         <Link
-          href="/organizer/home"
+          href="/organizer/attendee"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
           Attendee

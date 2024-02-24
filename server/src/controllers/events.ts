@@ -13,7 +13,7 @@ export const eventController = {
             select: {
               userid: true,
               email: true,
-              organizer: true,
+              username: true,
             },
           },
         },
@@ -40,7 +40,7 @@ export const eventController = {
             select: {
               userid: true,
               email: true,
-              organizer: true,
+              username: true,
             },
           },
         },
@@ -78,7 +78,7 @@ export const eventController = {
         eventprice,
         eventstartdate: new Date(starteventdate),
         eventenddate: new Date(endeventdate),
-        eventposter: req.file?.filename, //multer
+        eventposter: req.file?.filename,
         eventdescription,
         eventtype,
         availableseat,
@@ -89,7 +89,7 @@ export const eventController = {
         },
         user: {
           connect: {
-            userid: req.user?.user_id,
+            userid: 1,
           },
         },
       };

@@ -19,10 +19,13 @@ model User {
   lastLoginat DateTime @default(now())
   role Role
   customer CustomerDetail?
-  organizer OrganizerDetail?
   event EventDetail[]
   transaction Transaction[]
   voucheruser VoucherUser[]
+  joinedAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  isVerified Boolean @default(false)
 }
 
 enum Role {
@@ -46,15 +49,6 @@ model CustomerDetail {
   rating Rating[]
 }
 
-model OrganizerDetail {
-  organizerid Int @id 
-  organizer User @relation(fields:[organizerid], references: [userid], onDelete: NoAction,  onUpdate: NoAction)
-  role Role? @default(organizer)
-  joinedAt DateTime @default(now()) 
-  updatedAt DateTime @default(now())
-  deletedAt DateTime @default(now())
-}
-
 model EventDetail {
   eventid Int @id @default(autoincrement())
   eventname String
@@ -70,7 +64,7 @@ model EventDetail {
   deletedAt DateTime @default(now())
   user_id Int
   user User @relation(fields:[user_id], references:[userid], onDelete: NoAction,  onUpdate: NoAction)
-  location_id Int 
+  location_id Int
   location EventbyLocation @relation(fields:[location_id], references:[locationid], onDelete: NoAction,  onUpdate: NoAction)
   eventtransaction EventTransaction[]
   eventcategory EventCategory[]
