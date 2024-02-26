@@ -7,6 +7,7 @@ import { DatePicker } from "antd";
 import { Select, Option } from "@material-tailwind/react";
 import moment from "moment/moment";
 import dayjs from "dayjs";
+import { MdEventNote } from "react-icons/md";
 
 function AddEventComponent({ editId, fetchEvents }) {
   const intialEvent = {
@@ -118,6 +119,9 @@ function AddEventComponent({ editId, fetchEvents }) {
       <form id="form" action="" onSubmit={formik.handleSubmit}>
         `{" "}
         <div className="flex flex-col gap-1 text-black font-normal">
+          <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+            <MdEventNote className="text-[26px]" /> Create New Event Details
+          </div>
           <table className=" ">
             <tbody>
               <tr>
@@ -243,24 +247,34 @@ function AddEventComponent({ editId, fetchEvents }) {
                   <RangePicker
                     // value={formik.values.eventdate}
                     // disabledDate = {disabledDate}
-                    // showTime={{ format: "HH:mm" }}
-                    showTime={{
-                      hideDisabledOptions: true,
-                      defaultValue: [
-                        dayjs("00:00:00", "HH:mm:ss"),
-                        dayjs("11:59:59", "HH:mm:ss"),
-                      ],
-                    }}
-                    format="YYYY-MM-DD HH:mm:ss"
-                    // format="YYYY-MM-DD HH:mm"
-                    className="min-w-64"
-                    onChange={(e) => {
-                      console.log(e);
-                      //   console.log(e[0].$d);
-                      //   console.log(e[1].$d);
-                      // formik.setFieldValue("starteventdate", e[0].$d);
-                      // formik.setFieldValue("endeventdate", e[1].$d);
-                    }}
+                    showTime={{ format: "HH:mm:ss" }}
+                    onChange={(value, dateString) =>
+                      console.log("date", value, "formated date", dateString)
+                    }
+                    // showTime={{
+                    //   hideDisabledOptions: true,
+                    //   defaultValue: [
+                    //     dayjs("00:00:00", "HH:mm:ss"),
+                    //     dayjs("11:59:59", "HH:mm:ss"),
+                    //   ],
+                    // }}
+                    // format="YYYY-MM-DD HH:mm:ss"
+                    // // format="YYYY-MM-DD HH:mm"
+                    // className="min-w-64"
+                    // onChange={(e) => {
+                    //   console.log(e);
+                    // console.log(e[0].$d);
+                    // console.log(e[1].$d);
+                    // formik.setFieldValue("starteventdate", e[0].$d);
+                    // formik.setFieldValue("endeventdate", e[1].$d);
+                    // value={[
+                    //   moment(formik.values.starteventdate).format(
+                    //     "YYYY-MM-DD HH:mm"
+                    //   ),
+                    //   moment(formik.values.endeventdate).format(
+                    //     "YYYY-MM-DD HH:mm"
+                    //   ),
+                    // ]}
                     value={[
                       dayjs(formik.values.starteventdate),
                       dayjs(formik.values.endeventdate),

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { MaterialTailwind } from "react";
 // import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
 
@@ -55,7 +55,14 @@ function DashboardPage() {
   {
     /* Table*/
   }
-  const tableHead = ["Event Name", "Ticket Price", "Time", "Type", "Location"];
+  const tableHead = [
+    "Event Name",
+    "Ticket Price",
+    "Start Date",
+    "End Date",
+    "Type",
+    "Location",
+  ];
 
   {
     /* Formik*/
@@ -67,7 +74,8 @@ function DashboardPage() {
         .delete("/events/" + id)
         .then(() => {
           alert(`id ${id} berhasil dihapus`);
-          fetchProducts();
+          fetchEvents();
+          console.log(id);
         })
         .catch((err) => console.log(err));
   };
@@ -77,6 +85,9 @@ function DashboardPage() {
       .get("/events/", {
         params: {
           eventname: search,
+          location: search,
+          eventlocation: search,
+          category_id: search,
         },
       })
       .then((res) => {
@@ -123,8 +134,10 @@ function DashboardPage() {
             <CardHeader
               floated={false}
               shadow={false}
-              className="rounded-none "
-            ></CardHeader>
+              className="rounded-none text-xs font-normal w-full text-left"
+            >
+              <p className="px-5">Database event details</p>
+            </CardHeader>
             <CardBody className="overflow-scroll">
               <table className="w-full min-w-max table-auto">
                 <thead>
@@ -152,10 +165,11 @@ function DashboardPage() {
                         eventid,
                         eventname,
                         eventprice,
-                        eventdate,
+                        eventstartdate,
+                        eventenddate,
                         eventtype,
-                        eventlocation,
-                        voucherid,
+                        location,
+                        user,
                       },
                       index
                     ) => {
@@ -192,7 +206,16 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventdate}
+                              {eventstartdate}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {eventenddate}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -218,7 +241,7 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventlocation}
+                              {location.eventlocation}
                             </Typography>
                           </td>
 
@@ -237,7 +260,9 @@ function DashboardPage() {
                             <Tooltip content="Delete Database">
                               <button
                                 className=" text-gray-600 text-[18px] p-2"
-                                onClick={hapus}
+                                onClick={() => {
+                                  hapus(eventname);
+                                }}
                               >
                                 <FiDelete />
                                 {/* Delete */}
@@ -310,7 +335,7 @@ function DashboardPage() {
                     Voucher Promotion
                   </div>
                   <div className="bg-white p-4 flex flex-col gap-3">
-                    <div className=" text-[12.5px] font-semibold">
+                    <div className=" text-[12.5px] font-medium">
                       Create promotion voucher for your future event
                     </div>
                     <Link
