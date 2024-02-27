@@ -35,6 +35,7 @@ import {
 } from "@material-tailwind/react";
 import AddEventComponent from "../../../components/organizer/organizerCard";
 import SidebarComponent from "@/components/sidebar";
+import moment from "moment";
 
 function DashboardPage() {
   {
@@ -197,7 +198,7 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventprice}
+                              Rp {Number(eventprice).toLocaleString("id-ID")}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -206,7 +207,9 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventstartdate}
+                              {moment(eventstartdate).format(
+                                "YYYY-MM-DD hh:mm:ss"
+                              )}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -215,7 +218,9 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventenddate}
+                              {moment(eventenddate).format(
+                                "YYYY-MM-DD hh:mm:ss"
+                              )}{" "}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -261,7 +266,7 @@ function DashboardPage() {
                               <button
                                 className=" text-gray-600 text-[18px] p-2"
                                 onClick={() => {
-                                  hapus(eventname);
+                                  hapus(eventid);
                                 }}
                               >
                                 <FiDelete />

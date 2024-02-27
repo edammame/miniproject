@@ -9,20 +9,14 @@ export const voucherController = {
     try {
       const { vouchername } = req.query;
       const voucher = await prisma.voucher.findMany({
-        include: {
-          voucheruser: {
-            select: {
-              user_id: true,
-            },
-          },
-        },
-        //  >> user gaada didalam model Voucher tapi ada linking table
         where: {
           vouchername: {
-            contains: String(vouchername),
+            contains: String(vouchername).toLowerCase(),
           },
         },
       });
+      console.log(voucher);
+
       res.send({
         success: true,
         result: voucher,
@@ -32,7 +26,7 @@ export const voucherController = {
     }
   },
 
-  async postVoucher(req: ReqUser, res: Response, next: NextFunction) {
+  async postVoucher(req: Request, res: Response, next: NextFunction) {
     try {
       const {
         vouchername,
@@ -42,20 +36,20 @@ export const voucherController = {
         voucherenddate,
         stock,
       } = req.body;
+      console.log(req.body);
 
       const newVoucher: Prisma.VoucherCreateInput = {
         vouchername,
         voucherpromodesc,
         discount,
-        voucherstartdate,
-        voucherenddate,
-        stock,
+        voucherstartdate: new Date(voucherstartdate),
+        voucherenddate: new Date(voucherenddate),
+        stock: Number(stock),
         // voucheruser: {
         //   connect: {
         //     user_id: 1,
         //     // user_id: req.user?.user_id,
         //   },
-        //   //  >> apakah caranya begini untuk linking table?
         // },
       };
 
@@ -68,6 +62,8 @@ export const voucherController = {
         message: "voucher created successfully",
       });
     } catch (error) {
+      console.log(error);
+
       next({ message: "failed to create voucher" });
     }
   },

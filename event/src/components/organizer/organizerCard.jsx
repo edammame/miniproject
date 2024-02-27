@@ -1,7 +1,7 @@
 "use client";
 import { axiosInstance, axiosInstanceSSR } from "../../axios/axios";
 import { FieldArray, useFormik } from "formik";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TbUpload } from "react-icons/tb";
 import { DatePicker } from "antd";
 import { Select, Option } from "@material-tailwind/react";
@@ -13,11 +13,11 @@ function AddEventComponent({ editId, fetchEvents }) {
   const intialEvent = {
     eventname: "",
     eventprice: 0,
-    starteventdate: new Date(),
-    endeventdate: new Date(),
+    eventstartdate: new Date(),
+    eventenddate: new Date(),
     eventposter: null,
     eventdescription: "",
-    eventtype: "",
+    eventtype: "Free",
     location_id: "",
     voucherid: 0,
     availableseat: 0,
@@ -36,6 +36,18 @@ function AddEventComponent({ editId, fetchEvents }) {
   useEffect(() => {
     console.log(formik.values);
   }, [formik.values]);
+
+  // DropdownLocation
+  const [location, setLocation] = useState([]);
+
+  const fetchLocation = () => {
+    axiosInstance()
+      .get("/location")
+      .then((res) => {
+        setLocation(res.data.result);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const ubah = async (id) => {
     const res = await axiosInstance().get("/events/" + id);
@@ -63,6 +75,10 @@ function AddEventComponent({ editId, fetchEvents }) {
     if (editId) ubah(editId);
   }, [editId]);
 
+  useEffect(() => {
+    fetchLocation();
+  }, []);
+
   const { RangePicker } = DatePicker;
   // https://ant.design/components/date-picker#components-date-picker-demo-disabled-date
 
@@ -80,18 +96,18 @@ function AddEventComponent({ editId, fetchEvents }) {
     console.log(formik.values);
     const form = new FormData();
     form.append("eventname", formik.values.eventname);
-    form.append("eventlocation", formik.values.eventlocation);
+    form.append("eventlocation", formik.values.location_id);
     form.append("eventposter", formik.values.eventposter);
     form.append("eventprice", formik.values.eventprice);
     form.append("eventdescription", formik.values.eventdescription);
     form.append("eventtype", formik.values.eventtype);
-    form.append("starteventdate", formik.values.starteventdate);
-    form.append("endeventdate", formik.values.endeventdate);
+    form.append("eventstartdate", new Date(formik.values.eventstartdate));
+    form.append("eventenddate", formik.values.eventstartdate);
     form.append("availableseat", formik.values.availableseat);
 
     if (formik.values.id) {
       axiosInstance()
-        .patch("/events/" + formik.values.id, form)
+        .patch("/events" + formik.values.id, form)
         .then(() => {
           alert("event detail berhasil diedit");
           fetchEvents();
@@ -115,7 +131,6 @@ function AddEventComponent({ editId, fetchEvents }) {
 
   return (
     <div>
-      {/* <div className="w-full py-3"> */}
       <form id="form" action="" onSubmit={formik.handleSubmit}>
         `{" "}
         <div className="flex flex-col gap-1 text-black font-normal">
@@ -135,9 +150,6 @@ function AddEventComponent({ editId, fetchEvents }) {
                     id="eventname"
                     value={formik.values.eventname}
                     onChange={formik.handleChange}
-                    // onChange={(e) => {
-                    //   formik.setFieldValue("product_name", e.target.value);
-                    // }}
                   />
                 </td>
               </tr>
@@ -145,18 +157,22 @@ function AddEventComponent({ editId, fetchEvents }) {
               <tr>
                 <td className="px-2 text-[12.5px] font-normal "> Location</td>
                 <td>
-                  <input
-                    type="text"
-                    placeholder=" Event Location Detail"
-                    className="border border-gray-300 py-1 text-[12.5px]  text-black rounded-md min-w-64"
-                    required
-                    id="eventlocation"
+                  <Select
+                    id="location_id"
+                    label="Event Location"
+                    name="eventlocation"
+                    className="bg-white"
                     value={formik.values.eventlocation}
-                    onChange={formik.handleChange}
-                    // onChange={(e) => {
-                    //   formik.setFieldValue("product_name", e.target.value);
-                    // }}
-                  />
+                    onChange={(value) => {
+                      formik.setFieldValue("location_id", value);
+                    }}
+                  >
+                    {location.map((location, key) => (
+                      <Option key={key} value={location.locationid}>
+                        {location.eventlocation}
+                      </Option>
+                    ))}
+                  </Select>
                 </td>
               </tr>
               <tr>
@@ -193,13 +209,16 @@ function AddEventComponent({ editId, fetchEvents }) {
                   {/* dropdown */}
                   <div className="w-64 text-[12.5px] font-normal bg-white">
                     <Select
+                      id="eventtype"
                       label="Event Type"
                       name="eventtype"
                       value={formik.values.eventtype}
-                      onChange={formik.handleChange}
+                      onChange={(value) => {
+                        formik.setFieldValue("eventtype", value);
+                      }}
                     >
-                      <Option>Free</Option>
-                      <Option>Paid</Option>
+                      <Option value="free">Free</Option>
+                      <Option value="paid">Paid</Option>
                     </Select>
                   </div>
                 </td>
@@ -245,55 +264,17 @@ function AddEventComponent({ editId, fetchEvents }) {
                 <td className="px-2 text-[12.5px] font-normal"> Event Date</td>
                 <td>
                   <RangePicker
-                    // value={formik.values.eventdate}
-                    // disabledDate = {disabledDate}
                     showTime={{ format: "HH:mm:ss" }}
-                    onChange={(value, dateString) =>
-                      console.log("date", value, "formated date", dateString)
-                    }
-                    // showTime={{
-                    //   hideDisabledOptions: true,
-                    //   defaultValue: [
-                    //     dayjs("00:00:00", "HH:mm:ss"),
-                    //     dayjs("11:59:59", "HH:mm:ss"),
-                    //   ],
-                    // }}
-                    // format="YYYY-MM-DD HH:mm:ss"
-                    // // format="YYYY-MM-DD HH:mm"
-                    // className="min-w-64"
-                    // onChange={(e) => {
-                    //   console.log(e);
-                    // console.log(e[0].$d);
-                    // console.log(e[1].$d);
-                    // formik.setFieldValue("starteventdate", e[0].$d);
-                    // formik.setFieldValue("endeventdate", e[1].$d);
-                    // value={[
-                    //   moment(formik.values.starteventdate).format(
-                    //     "YYYY-MM-DD HH:mm"
-                    //   ),
-                    //   moment(formik.values.endeventdate).format(
-                    //     "YYYY-MM-DD HH:mm"
-                    //   ),
-                    // ]}
+                    format="YYYY-MM-DD HH:mm:ss"
                     value={[
                       dayjs(formik.values.starteventdate),
                       dayjs(formik.values.endeventdate),
                     ]}
-
-                    // pickerValue={[
-                    //   moment().format("YYYY-MM-DD hh:mm"),
-                    //   moment().format("YYYY-MM-DD hh:mm"),
-                    // ]}
-                    // defaultValue={[
-                    //   moment(formik.values.starteventdate),
-                    //   moment(formik.values.endeventdate),
-                    // ]}
                   />
                 </td>
               </tr>
               <tr>
                 <td className="px-2 text-[12.5px] font-normal ">
-                  {" "}
                   Available Seat
                 </td>
                 <td>
@@ -329,7 +310,6 @@ function AddEventComponent({ editId, fetchEvents }) {
         </div>
         `
       </form>
-      {/* </div> */}
     </div>
   );
 }

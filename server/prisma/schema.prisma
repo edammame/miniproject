@@ -104,6 +104,7 @@ model EventbyLocation {
 
 model Transaction {
   transactionid Int @id @default(autoincrement())
+  qty Decimal @db.Decimal(18,2)
   subtotalprice Decimal @db.Decimal(18,2)
   discountprice Decimal @db.Decimal(18,2)
   totalprice Decimal @db.Decimal(18,2)

@@ -17,3 +17,5 @@ route.post(
   }).single("image"),
   eventController.addEvent
 );
+
+route.delete("/:eventid", eventController.deleteEvent);

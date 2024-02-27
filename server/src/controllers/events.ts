@@ -159,12 +159,12 @@ export const eventController = {
       const {
         eventname,
         eventprice,
-        starteventdate,
-        endeventdate,
+        eventstartdate,
+        eventenddate,
         eventposter,
         eventdescription,
         eventtype,
-        location_id,
+        eventlocation,
         availableseat,
         userid,
       } = req.body;
@@ -172,12 +172,12 @@ export const eventController = {
       const newEvent: Prisma.EventDetailCreateInput = {
         eventname,
         eventprice,
-        eventstartdate: new Date(starteventdate),
-        eventenddate: new Date(endeventdate),
+        eventstartdate: new Date(eventstartdate),
+        eventenddate: new Date(eventenddate),
         eventposter: req.file?.filename,
         eventdescription,
         eventtype,
-        availableseat,
+        availableseat: Number(availableseat),
         user: {
           connect: {
             userid: 1,
@@ -186,7 +186,7 @@ export const eventController = {
         },
         location: {
           connect: {
-            locationid: Number(location_id),
+            locationid: Number(eventlocation),
           },
         },
       };
@@ -202,16 +202,4 @@ export const eventController = {
       next(error);
     }
   },
-
-  //create event category
-  //  const event =  await prisma.eventDetail.create({
-  //     data: newCategory,
-  //   });
-
-  //   await prisma.eventCategory.create({
-  //     data: {
-  //       event_id : event.eventid,
-  //       category_id : req.body.category_id
-  //     }
-  //   })
 };

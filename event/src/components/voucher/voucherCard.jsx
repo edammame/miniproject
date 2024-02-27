@@ -1,12 +1,13 @@
 "use client";
-import { axiosInstance } from "@/axios/axios";
+import { axiosInstance, axiosInstanceSSR } from "@/axios/axios";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
-function CreateVoucherComponent() {
+function CreateVoucherComponent({ fetchVouchers }) {
   const initialVoucher = {
     voucherid: "",
     vouchername: "",
@@ -20,27 +21,21 @@ function CreateVoucherComponent() {
   const formik = useFormik({
     initialValues: initialVoucher,
     onSubmit: () => {
-      console.log("test onsubmit formik");
+      console.log("masuk");
       simpan();
     },
   });
 
   useEffect(() => {
-    console.log(formik.values);
+    // console.log(formik.values);
   }, [formik.values]);
 
   const simpan = () => {
-    const form = new FormData();
-    form.append("voucherid", formik.values.voucherid);
-    form.append("voucherpromodesc", formik.values.voucherpromodesc);
-    form.append("discount", formik.values.discount);
-    form.append("voucherstartdate", formik.values.voucherstartdate);
-    form.append("voucherenddate", formik.values.voucherenddate);
-    form.append("stock", formik.values.stock);
+    console.log(formik.values, "ini voucher simpan test");
 
-    if (formik.values.id) {
+    if (formik.values.voucherid) {
       axiosInstance()
-        .patch("/voucher/" + formik.values.id, form)
+        .patch("/voucher/" + formik.values.voucherid, formik.values)
         .then(() => {
           alert("data voucher berhasil diedit");
           fetchVouchers();
@@ -50,7 +45,7 @@ function CreateVoucherComponent() {
         });
     } else {
       axiosInstance()
-        .post("/voucher/", form)
+        .post("/voucher/", { ...formik.values })
         .then(() => {
           alert("data voucher berhasil ditambahkan");
           fetchVouchers();
@@ -59,15 +54,20 @@ function CreateVoucherComponent() {
           console.log(err);
         });
     }
-    formik.resetForm();
+    // formik.resetForm();
   };
+
+  // useEffect(() => {
+  //   fetchVouchers();
+  // }, []);
 
   return (
     <>
       <div>
         <form id="form" action="" onSubmit={formik.handleSubmit}>
           <div className="flex flex-col gap-1 p-3 text-black font-normal">
-            <table className="">
+            <table className="w-[500px] ">
+              <thead></thead>
               <tbody>
                 <tr>
                   <td className="px-2 text-[12.5px] font-normal"> Name</td>
@@ -126,20 +126,33 @@ function CreateVoucherComponent() {
                   </td>
                   <td>
                     <RangePicker
-                      // value={formik.values.eventdate}
-                      // disabledDate = {disabledDate}
-                      className="min-w-64"
-                      showTime
-                      onChange={(e) => {
-                        //   console.log(e[0].$d);
-                        //   console.log(e[1].$d);
-                        formik.setFieldValue("starteventdate", e[0].$d);
-                        formik.setFieldValue("endeventdate", e[1].$d);
-                      }}
+                      showTime={{ format: "HH:mm:ss" }}
+                      format="YYYY-MM-DD HH:mm:ss"
+                      value={[
+                        dayjs(formik.values.voucherstartdate),
+                        dayjs(formik.values.voucherenddate),
+                      ]}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-2 text-[12.5px] font-normal ">Stock</td>
+                  <td>
+                    <input
+                      type="number"
+                      placeholder="Voucher Stock"
+                      className="border border-gray-300 py-1 text-[12.5px] text-black rounded-md min-w-64"
+                      min={0}
+                      max={200}
+                      required
+                      id="stock"
+                      value={formik.values.stock}
+                      onChange={formik.handleChange}
                     />
                   </td>
                 </tr>
               </tbody>
+              <tfoot></tfoot>
             </table>
             <div className="flex gap-2 p-2">
               <button

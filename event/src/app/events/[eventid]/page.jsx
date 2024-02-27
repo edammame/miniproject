@@ -1,10 +1,12 @@
 import { axiosInstanceSSR } from "@/axios/axios";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { MdPayment } from "react-icons/md";
+import { LuTicket } from "react-icons/lu";
 import PromoComponent from "@/components/transaction/promoComponent";
-import UploadTfComponent from "@/components/transaction/transactionComponent";
 import HeadComponent from "@/components/transaction/headerComponent";
+import moment from "moment/moment";
+import Link from "next/link";
+import ButtontoTransactionComponent from "@/components/transaction/transactionComponent";
 
 // dont forget to write async
 async function TransactionPage({ params }) {
@@ -18,7 +20,7 @@ async function TransactionPage({ params }) {
     <>
       <HeadComponent />
       <div className=" items-centers flex flex-col  bg-[#F1F1F1]">
-        {/* Buy  */}
+        {/* Event Details */}
         <div className="flex flex-col justify-center max-w-screen-2xl w-full items-center m-auto ">
           <div className="grid max-w-screen-2xl  md:grid-cols-2 p-7 gap-3 w-full  sm:grid-cols-1">
             <div className="m-auto ">
@@ -38,23 +40,6 @@ async function TransactionPage({ params }) {
                 </div>
               </div>
 
-              <form action="" className="flex gap-3" id="form">
-                <input
-                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] p-5 rounded-lg text-center"
-                  type="number"
-                  min={1}
-                  placeholder="Quantity"
-                  required
-                  id="qty"
-                ></input>
-                <button
-                  type="submit"
-                  className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
-                >
-                  Buy
-                </button>
-              </form>
-
               <div className="font-semibold">About the event</div>
               <hr />
               {/* eventorganizer */}
@@ -62,38 +47,39 @@ async function TransactionPage({ params }) {
                 <div className="font-semibold text-[12px]">
                   Event Organized by:
                 </div>
-                <div className=" text-justify text-[14px]">
+                <div className=" text-justify text-[14px] p-2 bg-gray-200">
                   {event?.user?.username}
                 </div>
               </div>
               {/* eventlocation */}
               <div className=" py-2">
                 <div className="font-semibold text-[12px]">Event Location:</div>
-                <div className=" text-justify text-[14px]">
+                <div className=" text-justify text-[14px] p-2 bg-gray-200">
                   {event?.location?.eventlocation}
                 </div>
               </div>
               {/* eventdate */}
               <div className=" py-2">
                 <div className="font-semibold  text-[12px]"> Time:</div>
-                <div className=" text-justify text-[14px]">
-                  {event?.eventstartdate} - {event?.eventenddate}
+                <div className=" text-justify text-[14px] p-2 bg-gray-200">
+                  {moment(event?.eventstartdate).format("YYYY-MM-DD HH:mm")} -
+                  {moment(event?.eventenddate).format("YYYY-MM-DD HH:mm")}
                 </div>
               </div>
               {/* availableseat */}
               <div className=" py-2">
-                <div className="font-semibold  text-[12px]">
+                <div className="font-semibold  text-[12px] ">
                   {" "}
                   Event Capacity:
                 </div>
-                <div className=" text-justify text-[14px]">
+                <div className=" text-justify text-[14px] p-2 bg-gray-200">
                   {event?.availableseat}
                 </div>
               </div>
               {/* type */}
               <div className=" py-2">
                 <div className="font-semibold  text-[12px]"> Event Type:</div>
-                <div className=" text-justify text-[14px]">
+                <div className=" text-justify text-[14px] p-2 bg-gray-200">
                   {event?.eventtype}
                 </div>
               </div>
@@ -108,67 +94,46 @@ async function TransactionPage({ params }) {
           {/* Payment */}
           <div>
             <div className=" bg-[#FABB11] flex flex-col-3 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
-              <MdPayment className="text-[22px]" /> Payment Summary
+              <LuTicket className="text-[22px]" /> Booking Summary
             </div>
             {/* Content */}
             <div className="bg-white p-3 flex flex-col gap-1">
               {/* Subtotal Ticket Price */}
               <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] px-2">
+                <div className="font-semibold text-[14px] p-2">
                   Subtotal Ticket Price:
                 </div>
-                <div className=" text-justify text-[14px] px-3">
-                  {
-                    // {event.eventprice} * {quantity} ||
-                    "IDR eventprice"
-                  }
+                <div className=" text-justify text-[14px] p-2">
+                  IDR {Number(event?.eventprice).toLocaleString("id-ID")}
                 </div>
               </div>
-              {/* Referal */}
+              {/* Ini referal promotion */}
               <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] px-2">
-                  {" "}
+                <div className="font-semibold text-[14px] p-2">
                   Referal Discount:
                 </div>
-                <div className=" text-justify text-[14px] px-2">
-                  {
-                    // {referaldiscount} ||
-                    "IDR referal"
-                  }
+                <div className=" text-justify text-[14px] p-2">
+                  IDR {Number(event?.eventprice).toLocaleString("id-ID")}
                 </div>
               </div>
-              {/* Promo */}
-              <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] px-2">
-                  {" "}
-                  Promo Discount:
-                </div>
-                <div className=" text-justify text-[14px] px-2">
-                  {
-                    // {voucherdiscount} ||
-                    "IDR discount"
-                  }
-                </div>
-              </div>
-              {/* Total Payment */}
 
+              {/* Total Payment */}
               <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] px-2">
-                  {" "}
-                  Total Payment:
+                <div className="font-semibold text-[14px] p-2">
+                  Total Discount
                 </div>
-                <div className=" text-justify text-[14px] px-2">
-                  {
-                    // {subtotal_ticket_price} - {referaldiscount}- {voucherdiscount} ||
-                    "IDR payment"
-                  }
+                <div className=" text-justify text-[14px] p-2">
+                  IDR {Number(event?.eventprice) - Number(event?.eventprice)}
                 </div>
               </div>
             </div>
-            <UploadTfComponent />
           </div>
-          {/* ClosingTag */}
+
+          <div className="bg-white p-4 px-4 justify-center">
+            <ButtontoTransactionComponent />
+          </div>
         </div>
+        {/* ClosingTag */}
       </div>
     </>
   );
