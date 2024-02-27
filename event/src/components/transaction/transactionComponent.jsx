@@ -2,55 +2,42 @@
 import { useEffect, useRef } from "react";
 import { TbUpload } from "react-icons/tb";
 import Link from "next/link";
+import { axiosInstance } from "@/axios/axios";
 
-function ButtontoTransactionComponent() {
-  // const [eventid, setEventid] = useState([]);
+function ButtontoTransactionComponent({ event, discountprice, promotion }) {
+  const postTrasaction = () => {
+    if (window.confirm("Confirm to buy this event ticket?")) {
+      axiosInstance()
+        .post("/transactions/", {
+          qty: 1,
+          discountprice: Number(discountprice),
+          totalprice: (
+            Number(event?.eventprice) - Number(discountprice)
+          ).toLocaleString("id-ID"),
+          user_id: 1,
+          voucher_id: promotion.voucher_id,
+          subtotalprice: Number(event?.eventprice),
+          qty: 1,
+          total: event.price,
+          eventid: event.eventid,
+        })
 
-  // const fetchEventsbyId = (id) => {
-  //   axiosInstance()
-  //     .get("/events/" + id)
-  //     .then((res) => {
-  //       setEventid(res.data.result);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+        .then((res) => {
+          // alert("success to buy event ticket");
+        })
+        .catch((err) => console.log(err));
+    }
 
-  // useEffect(() => {
-  //   fetchEventsbyId();
-  //   console.log(eventid);
-  // }, [value]);
-
-  // const [carts, setCart] = useState([]);
-  // const [total, setTotal] = useState(0);
-
-  // const fetchCart = () => {
-  //   setCart(res.data.result);
-  //   const sum = res.data.result.reduce(
-  //     (sum, { qty, product }) => sum + qty * product.price,
-  //     0
-  //   );
-  //   setTotal(sum);
-  // };
-
-  // const beli = async (values) => {
-  //   try {
-  //     await axiosInstance().post("/transactions", values);
-  //     fetchCart();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+    // location.reload();
+  };
 
   // useEffect(() => {
-  //   fetchCart();
+  //   postTrasaction();
   // }, []);
+
   return (
     <>
-      <button
-      // onClick={() => {
-      //   fetchEventsbyId;
-      // }}
-      >
+      <button onClick={postTrasaction}>
         <Link
           href="/payment"
           className=" text-[12.5px] w-[128px] h-[40px] px-10 py-2.5 border rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"

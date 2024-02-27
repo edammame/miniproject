@@ -14,7 +14,7 @@ export function PaymentModal({ open, handleClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box className="bg-[#FFFFFF] max-lg:p-16 p-10 m-14">
+        <Box className="bg-[#FFFFFF] lg:mx-96 p-10 m-14">
           <div className="flex flex-col gap-2 text-xs">
             <div className="flex justify-between border-b pb-2">
               <b>BCA VIRTUAL ACCOUNT</b>
@@ -123,10 +123,10 @@ export function PaymentModal({ open, handleClose }) {
               <button
                 type="button"
                 variant="contained"
-                className="bg-black p-2 text-white w-[200px] rounded-md"
+                className="bg-black p-2 text-white w-[100px] rounded-md"
                 onClick={handleClose}
               >
-                Confirm Payment
+                Finish
               </button>
             </div>
           </div>

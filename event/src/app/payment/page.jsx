@@ -14,12 +14,12 @@ function PaymentPage() {
           Proceed with Payment
         </div>
 
-        <div className="p-5 m-2 py-2 rounded-2xl bg-[#FFFFFF] flex flex-cols gap-2 justify-between items-center">
-          <div className=" text-[14px] p-2 flex flex-cols gap-2 items-center">
+        <div className="p-5 m-2 py-2 rounded-2xl bg-[#FFFFFF] lg:mx-96 flex flex-cols gap-2 justify-between items-center">
+          <div className=" text-[14px] p-2 flex flex-cols  gap-2 items-center">
             Payment Method
             <FaArrowRight className=" text-[14px]" />
           </div>{" "}
-          <PaymentComponent className="p-2" />
+          <PaymentComponent className="p-2 " />
         </div>
       </div>
     </>

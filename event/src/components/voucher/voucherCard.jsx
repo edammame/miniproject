@@ -65,8 +65,8 @@ function CreateVoucherComponent({ fetchVouchers }) {
     <>
       <div>
         <form id="form" action="" onSubmit={formik.handleSubmit}>
-          <div className="flex flex-col gap-1 p-3 text-black font-normal">
-            <table className="w-[500px] ">
+          <div className="flex flex-col gap-1 p-3 text-black font-normal justify-center items-center">
+            <table className=" w-full lg:w-1/2 ">
               <thead></thead>
               <tbody>
                 <tr>

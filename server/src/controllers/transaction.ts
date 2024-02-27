@@ -30,4 +30,41 @@ export const transactionController = {
       next(error);
     }
   },
+
+  async addTrasaction(req: ReqUser, res: Response, next: NextFunction) {
+    try {
+      const {
+        qty,
+        subtotalprice,
+        discountprice,
+        totalprice,
+        user_id,
+        voucher_id,
+        transactionid,
+      } = req.body;
+
+      const newTransaction: Prisma.TransactionCreateInput = {
+        qty,
+        subtotalprice,
+        discountprice,
+        totalprice,
+        user: { connect: { userid: 1 } },
+        // userid: Number(user_id),
+        voucher: { connect: { voucherid: voucher_id } },
+      };
+
+      await prisma.transaction.create({
+        data: newTransaction,
+      });
+
+      res.send({
+        success: true,
+        message: "transaction post successfully",
+      });
+    } catch (error) {
+      console.log(error);
+
+      next({ message: "failed to post transaction" });
+    }
+  },
 };

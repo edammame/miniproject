@@ -67,4 +67,20 @@ export const voucherController = {
       next({ message: "failed to create voucher" });
     }
   },
+
+  async deleteVoucher(req: Request, res: Response, next: NextFunction) {
+    try {
+      await prisma.voucher.delete({
+        where: {
+          voucherid: req.params.voucherid,
+        },
+      });
+      res.send({
+        success: true,
+        message: "data berhasil dihapus",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };

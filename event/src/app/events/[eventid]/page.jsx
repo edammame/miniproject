@@ -1,12 +1,10 @@
 import { axiosInstanceSSR } from "@/axios/axios";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { LuTicket } from "react-icons/lu";
+
 import PromoComponent from "@/components/transaction/promoComponent";
 import HeadComponent from "@/components/transaction/headerComponent";
 import moment from "moment/moment";
-import Link from "next/link";
-import ButtontoTransactionComponent from "@/components/transaction/transactionComponent";
 
 // dont forget to write async
 async function TransactionPage({ params }) {
@@ -88,50 +86,8 @@ async function TransactionPage({ params }) {
         </div>
 
         {/* Voucher */}
-        <div className="flex flex-col p-8 gap-14 ">
-          <PromoComponent />
-
-          {/* Payment */}
-          <div>
-            <div className=" bg-[#FABB11] flex flex-col-3 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
-              <LuTicket className="text-[22px]" /> Booking Summary
-            </div>
-            {/* Content */}
-            <div className="bg-white p-3 flex flex-col gap-1">
-              {/* Subtotal Ticket Price */}
-              <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] p-2">
-                  Subtotal Ticket Price:
-                </div>
-                <div className=" text-justify text-[14px] p-2">
-                  IDR {Number(event?.eventprice).toLocaleString("id-ID")}
-                </div>
-              </div>
-              {/* Ini referal promotion */}
-              <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] p-2">
-                  Referal Discount:
-                </div>
-                <div className=" text-justify text-[14px] p-2">
-                  IDR {Number(event?.eventprice).toLocaleString("id-ID")}
-                </div>
-              </div>
-
-              {/* Total Payment */}
-              <div className=" flex flex-col-2 justify-between">
-                <div className="font-semibold text-[14px] p-2">
-                  Total Discount
-                </div>
-                <div className=" text-justify text-[14px] p-2">
-                  IDR {Number(event?.eventprice) - Number(event?.eventprice)}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white p-4 px-4 justify-center">
-            <ButtontoTransactionComponent />
-          </div>
+        <div className="flex flex-col p-8 gap-14  ">
+          <PromoComponent event={event} />
         </div>
         {/* ClosingTag */}
       </div>

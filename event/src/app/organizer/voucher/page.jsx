@@ -45,13 +45,16 @@ function VoucherPage() {
     formik.setFieldValue("stock", voucher.stock);
   };
 
-  const hapus = (id) => {
-    if (window.confirm("apakah anda yakin menghapus product id " + id + "?"))
+  const hapus = (voucherid) => {
+    if (
+      window.confirm("apakah anda yakin menghapus voucherid " + voucherid + "?")
+    )
       axiosInstance()
-        .delete("/voucher/" + id)
+        .delete("/voucher/" + voucherid)
         .then(() => {
-          alert(`id ${id} berhasil dihapus`);
+          alert(`voucherid ${voucherid} berhasil dihapus`);
           fetchVouchers();
+          console.log(voucherid);
         })
         .catch((err) => console.log(err));
   };
@@ -75,8 +78,8 @@ function VoucherPage() {
         </div>
         <div className="flex flex-col justify-center  max-w-[1000px] w-full items-center m-auto  ">
           {/* Search Bar  */}
-          <div className="py-5 w-full ">
-            <div className="flex px-3 items-center gap-3 border-gray-300 border-b w-72  p-2">
+          <div className="py-5 w-[50%]  ">
+            <div className="flex px-3  items-center gap-3 border-gray-300 border-b w-72  p-2">
               <IoSearch className=" w-5 h-5 text-black" />
               <input
                 type="text"
@@ -87,7 +90,7 @@ function VoucherPage() {
               />
             </div>
           </div>
-          <div className="bg-[#FABB11] w-[500px]  font-semibold text-[14px] py-3 px-3 flex flex-col-2 gap-2 rounded-md ">
+          <div className="bg-[#FABB11] w-full lg:w-1/2 font-semibold text-[14px] py-3 px-3 flex flex-col-2 gap-2 rounded-md ">
             <MdOutlineManageHistory className="text-[20px]" />
             Voucher Database
           </div>
@@ -107,13 +110,13 @@ function VoucherPage() {
               <DatabaseComponent
                 {...voucher}
                 key={key}
-                edit={() => edit(vouchers.voucherid)}
-                hapus={() => hapus(vouchers.voucherid)}
+                edit={() => edit(voucher.voucherid)}
+                hapus={() => hapus(voucher.voucherid)}
               />
             ))}
           </table>
           {/* <div className="mt-3 text-[10px]"> */}
-          <div className="bg-[#FABB11] mt-8 font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3 w-[500px] rounded-md ">
+          <div className="bg-[#FABB11] mt-8 font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3  w-full lg:w-1/2 rounded-md ">
             <TbShoppingCartDiscount className="text-[20px]" />
             Voucher Details
           </div>
