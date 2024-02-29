@@ -58,12 +58,16 @@ function PromoComponent({ event }) {
                 className="bg-white"
                 onChange={(value) => {
                   // formik.setFieldValue("discount", value);
-                  setVoucherId(value);
-                  SetDiscountPrice(value);
+                  setVoucherId(
+                    promotion.length ? promotion[value].voucherid : null
+                  );
+                  SetDiscountPrice(
+                    promotion.length ? promotion[value].discount : 0
+                  );
                 }}
               >
                 {promotion.map((p, key) => (
-                  <Option key={key} value={p.discount}>
+                  <Option key={key} value={key}>
                     {p.vouchername.toLocaleString()}
                   </Option>
                 ))}
@@ -94,7 +98,7 @@ function PromoComponent({ event }) {
               Voucher Discount:
             </div>
             <div className=" text-justify text-[14px] p-2">
-              IDR {Number(discountprice).toLocaleString("id-ID")}
+              IDR {Number(discountprice || 0).toLocaleString("id-ID")}
             </div>
           </div>
 
@@ -104,18 +108,18 @@ function PromoComponent({ event }) {
             <div className=" text-justify text-[14px] p-2">
               IDR{" "}
               {(
-                Number(event?.eventprice) - Number(discountprice)
+                Number(event?.eventprice) - Number(discountprice || 0)
               ).toLocaleString("id-ID")}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white p-4 px-4 justify-center">
+      <div className="justify-center">
         <ButtontoTransactionComponent
           event={event}
           discountprice={discountprice}
-          promotion={promotion}
+          voucherId={voucherId}
         />
       </div>
     </>

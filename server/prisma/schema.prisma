@@ -66,9 +66,9 @@ model EventDetail {
   user User @relation(fields:[user_id], references:[userid], onDelete: NoAction,  onUpdate: NoAction)
   location_id Int
   location EventbyLocation @relation(fields:[location_id], references:[locationid], onDelete: NoAction,  onUpdate: NoAction)
-  eventtransaction EventTransaction[]
   eventcategory EventCategory[]
   rating Rating[]
+  transactions Transaction[]
 }
 
 enum EventType {
@@ -113,18 +113,12 @@ model Transaction {
   deletedAt DateTime @default(now())
   user_id Int
   user User @relation(fields: [user_id], references:[userid], onDelete: NoAction,  onUpdate: NoAction)
-  eventtransaction EventTransaction[]
   voucher_id String?
-  voucher Voucher @relation(fields: [voucher_id], references:[voucherid], onDelete: NoAction,  onUpdate: NoAction)
+  voucher Voucher? @relation(fields: [voucher_id], references:[voucherid], onDelete: NoAction,  onUpdate: NoAction)
+  event_id Int
+  event EventDetail @relation (fields: [event_id], references:[eventid], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model EventTransaction {
-  event_id Int
-  transaction_id Int 
-  event EventDetail @relation (fields: [event_id], references:[eventid], onDelete: NoAction, onUpdate: NoAction)
-  transaction Transaction @relation (fields: [transaction_id], references:[transactionid], onDelete: NoAction,  onUpdate: NoAction)
-  @@id([event_id,transaction_id])
-}
 
 model Voucher {
 voucherid String @id @default(uuid())
@@ -138,7 +132,7 @@ createdAt DateTime @default(now())
 updatedAt DateTime @default(now())
 deletedAt DateTime @default(now())
 voucheruser VoucherUser[]
-transaction Transaction[]?
+transaction Transaction[]
 }
 
 model VoucherUser {

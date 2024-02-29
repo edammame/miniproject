@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FaRegFolderOpen } from "react-icons/fa";
 import { MdFaceRetouchingNatural } from "react-icons/md";
 import { axiosInstance } from "@/axios/axios";
+import { IoSearch } from "react-icons/io5";
 import React from "react";
 import TransactionDatabase from "@/components/organizer/transactionDatabase";
 import { useDebounce } from "use-debounce";
@@ -11,10 +12,11 @@ import { useDebounce } from "use-debounce";
 function TransactionPage() {
   //fetchTransaction
   const [transaction, setTransaction] = useState([]);
+  //fetchTransactionbyEventId
   const [count, setCount] = useState([]);
 
   //ini search name
-  const [searchname, setName] = useState("");
+  const [searchname, setSearchname] = useState("");
   const [value] = useDebounce(searchname, 500);
 
   const fetchTransaction = () => {
@@ -26,9 +28,9 @@ function TransactionPage() {
       .catch((err) => console.log(err));
   };
 
-  const countTransaction = () => {
+  const countTransaction = (eventid) => {
     axiosInstance()
-      .get("/transaction/counttransaction", {
+      .get("/transaction/counttransaction/" + eventid, {
         params: {
           eventid: searchname,
           eventname: searchname,
@@ -61,14 +63,14 @@ function TransactionPage() {
           <SidebarComponent />
           {/* Search Bar  */}
           <div className="py-5 w-[50%]  ">
-            <div className="flex px-3  items-center gap-3 border-gray-300 border-b w-72  p-2">
+            <div className="flex px-3 items-center gap-3 border-gray-300 w-72 ">
               <IoSearch className=" w-5 h-5 text-black" />
               <input
                 type="text"
-                placeholder="Search any voucher here"
+                placeholder="Search"
                 className=" outline-none rounded-md text-[12px] py-1"
                 value={searchname}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setSearchname(e.target.value)}
               />
             </div>
           </div>
@@ -78,11 +80,19 @@ function TransactionPage() {
             </div>
           </div>
           {/* TransactionOverview */}
-          <div className="flex flex-col ">
+          <div className="flex flex-col-2 gap-2 m-2 ">
             <div className="bg-white w-[100px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
               Number of Transaction
+              <div className=" text-lg">20</div>{" "}
             </div>
-            <div className=""></div>
+            <div className="bg-white w-[160px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
+              Total Revenue per Event
+              <div className=" text-lg">IDR 20.000.000</div>
+            </div>
+            {/* <div className="bg-white w-[100px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
+              Total Transaction per Event
+              <div className=" text-lg">5</div>
+            </div> */}
           </div>
 
           {/* Header */}
@@ -96,9 +106,8 @@ function TransactionPage() {
             <tbody>
               <tr className=" text-[13px] font-normal bg-[#F6F7F8]">
                 <th className="hover:bg-white py-1">TRID</th>
-
                 <th className="hover:bg-white py-1">Customer Name</th>
-                <th className="hover:bg-white py-1">Voucher Name</th>
+                <th className="hover:bg-white py-1">Event Name</th>
                 <th className="hover:bg-white py-1">Voucher ID</th>
               </tr>
             </tbody>

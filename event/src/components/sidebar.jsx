@@ -5,12 +5,12 @@ function SidebarComponent() {
   return (
     <>
       <div className="flex flex-col-2 gap-3 bg-white rounded-md shadow-2xl p-2 px-2 w-full text-sm justify-center overflow-scroll">
-        <Link
+        {/* <Link
           href="/organizer/home"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
           Profile
-        </Link>
+        </Link> */}
         <Link
           href="/organizer/dashboard"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
@@ -27,7 +27,7 @@ function SidebarComponent() {
           href="/organizer/attendee"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
-          Attendee
+          Customer
         </Link>
         {/* <Link
           href="/organizer/voucher"

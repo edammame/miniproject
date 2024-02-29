@@ -7,7 +7,6 @@ import { ReqUser } from "../middlewares/auth-middleware";
 export const transactionController = {
   async getTransaction(req: ReqUser, res: Response, next: NextFunction) {
     try {
-      const { transactionid } = req.query;
       const transaction = await prisma.transaction.findMany({
         include: {
           user: true,
@@ -16,14 +15,9 @@ export const transactionController = {
               vouchername: true,
             },
           },
-          eventtransaction: {
+          event: {
             select: {
-              event: {
-                select: {
-                  eventid: true,
-                  eventname: true,
-                },
-              },
+              eventname: true,
             },
           },
         },
@@ -48,9 +42,9 @@ export const transactionController = {
         subtotalprice,
         discountprice,
         totalprice,
+        event_id,
         user_id,
         voucher_id,
-        eventtransaction,
       } = req.body;
 
       const newTransaction: Prisma.TransactionCreateInput = {
@@ -58,29 +52,40 @@ export const transactionController = {
         subtotalprice,
         discountprice,
         totalprice,
+        event: { connect: { eventid: event_id } },
+
         user: { connect: { userid: 1 } },
         // userid: Number(user_id),
-        voucher: { connect: { voucherid: voucher_id } },
+        // ...whereVoucher
+        voucher: voucher_id
+          ? {
+              connect: {
+                voucherid: voucher_id,
+              },
+            }
+          : {},
       };
 
       const newTs = await prisma.transaction.create({
         data: newTransaction,
       });
 
-      const eventtransactionInsert = eventtransaction.map((eventId: number) => {
-        return {
-          transaction_id: newTs.transactionid,
-          event_id: eventId,
-        };
-      });
+      // console.log(eventtransaction, " ini evtr");
 
-      console.log(eventtransactionInsert, "testing eventr");
+      // const eventtransactionInsert = eventtransaction.map((eventId: number) => {
+      //   return {
+      //     transaction_id: newTs.transactionid,
+      //     event_id: eventId,
+      //   };
+      // });
 
-      const et = await prisma.eventTransaction.createMany({
-        data: eventtransactionInsert,
-      });
+      // console.log(eventtransactionInsert, "testing eventr");
 
-      console.log(et);
+      // const et = await prisma.eventTransaction.createMany({
+      //   data: eventtransactionInsert,
+      // });
+
+      // console.log(et);
 
       res.send({
         success: true,
@@ -101,13 +106,7 @@ export const transactionController = {
     try {
       const { eventid, eventname } = req.params;
       const countTransactionByeventid = await prisma.$queryRaw`
-      select count(*) from EventTransaction et
-      join Transaction t on t.transactionid = et.transaction_id
-      where et.event_id= ${eventid}
-      `;
-
-      const countTransactionByeventname = await prisma.$queryRaw`
-      select count(*) from EventTransaction et
+      select * from EventTransaction et
       join Transaction t on t.transactionid = et.transaction_id
       where et.event_id= ${eventid}
       `;
@@ -117,6 +116,7 @@ export const transactionController = {
       res.send({
         success: true,
         result: countTransactionByeventid,
+        message: "get countdata transaction",
       });
     } catch (error) {
       next(error);
