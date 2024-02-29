@@ -27,7 +27,7 @@ function DatabaseComponent({
       <td className="lg:w-[100px]">
         {moment(voucherenddate).format("YYYY-MM-DD hh:mm:ss")}
       </td>
-      <td className="flex lg:w-[100px] gap-3 justify-center items-center h-[70px]">
+      <td className=" px-3 w-[20px] justify-center items-center h-[70px]">
         {/* <button
           onClick={() => edit(voucherid)}
           className=" border rounded-md text-black"
@@ -35,7 +35,7 @@ function DatabaseComponent({
           <FaRegEdit />
           {/* Edit */}
         {/* </button> */}
-        <button className=" border rounded-md text-black" onClick={hapus}>
+        <button className=" rounded-md text-black" onClick={hapus}>
           <FiDelete />
           {/* Delete */}
         </button>

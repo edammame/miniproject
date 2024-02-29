@@ -15,7 +15,7 @@ function PromoComponent({ event }) {
   const [discountprice, SetDiscountPrice] = useState();
 
   useEffect(() => {
-    console.log(voucherId);
+    console.log(voucherId, "ini voucher nominal");
   });
 
   const fetchPromotion = () => {
@@ -51,6 +51,7 @@ function PromoComponent({ event }) {
           >
             <div className="h-[40px] text-[12.5px] w-[160px]">
               <Select
+                required
                 id="discount"
                 label="Voucher Discount"
                 name="discount"

@@ -4,24 +4,26 @@ import { TbUpload } from "react-icons/tb";
 import Link from "next/link";
 import { axiosInstance } from "@/axios/axios";
 
-function ButtontoTransactionComponent({ event, discountprice, promotion }) {
+function ButtontoTransactionComponent({
+  event,
+  discountprice,
+  promotion,
+  user,
+  eventtransaction,
+}) {
   const postTrasaction = () => {
     if (window.confirm("Confirm to buy this event ticket?")) {
       axiosInstance()
-        .post("/transactions/", {
+        .post("/transaction", {
           qty: 1,
-          discountprice: Number(discountprice),
-          totalprice: (
-            Number(event?.eventprice) - Number(discountprice)
-          ).toLocaleString("id-ID"),
-          user_id: 1,
-          voucher_id: promotion.voucher_id,
           subtotalprice: Number(event?.eventprice),
-          qty: 1,
-          total: event.price,
+          discountprice: Number(discountprice),
+          totalprice: Number(event?.eventprice) - Number(discountprice),
+          user_id: user?.user_id,
+          voucher_id: promotion.voucher_id,
           eventid: event.eventid,
+          eventtransaction: [],
         })
-
         .then((res) => {
           // alert("success to buy event ticket");
         })

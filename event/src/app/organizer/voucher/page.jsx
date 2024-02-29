@@ -7,7 +7,8 @@ import { IoSearch } from "react-icons/io5";
 import { useDebounce } from "use-debounce";
 import { Divider } from "antd";
 import DatabaseComponent from "@/components/voucher/voucherDb";
-
+//Pagination
+import { Pagination as MuiPagination } from "@mui/material";
 import CreateVoucherComponent from "@/components/voucher/voucherCard";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { TbShoppingCartDiscount } from "react-icons/tb";
@@ -58,6 +59,12 @@ function VoucherPage() {
         })
         .catch((err) => console.log(err));
   };
+
+  {
+    /* Pagination */
+  }
+  const [page, setPage] = React.useState(1);
+  const totalPages = 10;
   return (
     <>
       <div className="w-full bg-[#F1F1F1]">
@@ -90,11 +97,11 @@ function VoucherPage() {
               />
             </div>
           </div>
-          <div className="bg-[#FABB11] w-full lg:w-1/2 font-semibold text-[14px] py-3 px-3 flex flex-col-2 gap-2 rounded-md ">
+          <div className="bg-[#FABB11]  overflow-scroll w-full lg:w-1/2 font-semibold text-[14px] py-3 px-3 flex flex-col-2 gap-2 rounded-md ">
             <MdOutlineManageHistory className="text-[20px]" />
             Voucher Database
           </div>
-          <table className="w-[500px] ">
+          <table className=" w-full table-auto lg:w-1/2 overflow-scroll">
             <tbody>
               <tr className=" text-[13px] font-normal bg-[#F6F7F8]">
                 {/* <th className="hover:bg-white py-2">ID</th> */}
@@ -115,6 +122,12 @@ function VoucherPage() {
               />
             ))}
           </table>
+          <MuiPagination
+            color="primary"
+            count={totalPages}
+            page={page}
+            onChange={(_, newPage) => setPage(newPage)}
+          />
           {/* <div className="mt-3 text-[10px]"> */}
           <div className="bg-[#FABB11] mt-8 font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3  w-full lg:w-1/2 rounded-md ">
             <TbShoppingCartDiscount className="text-[20px]" />

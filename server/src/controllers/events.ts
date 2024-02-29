@@ -23,7 +23,11 @@ export const eventController = {
           },
           eventcategory: {
             select: {
-              category_id: true,
+              category: {
+                select: {
+                  categoryname: true,
+                },
+              },
             },
           },
         },
@@ -90,12 +94,12 @@ export const eventController = {
       const {
         eventname,
         eventprice,
-        starteventdate,
-        endeventdate,
+        eventstartdate,
+        eventenddate,
         eventposter,
         eventdescription,
         eventtype,
-        location_id,
+        eventlocation,
         availableseat,
         user_id,
       } = req.body;
@@ -103,12 +107,12 @@ export const eventController = {
       const editEvent: Prisma.EventDetailUpdateInput = {
         eventname,
         eventprice,
-        eventstartdate: new Date(starteventdate),
-        eventenddate: new Date(endeventdate),
+        eventstartdate: new Date(eventstartdate),
+        eventenddate: new Date(eventenddate),
         eventposter: req.file?.filename,
         eventdescription,
         eventtype,
-        availableseat,
+        availableseat: Number(availableseat),
         user: {
           connect: {
             userid: 1,
@@ -117,7 +121,7 @@ export const eventController = {
         },
         location: {
           connect: {
-            locationid: Number(location_id),
+            locationid: Number(eventlocation),
           },
         },
       };
@@ -166,7 +170,7 @@ export const eventController = {
         eventtype,
         eventlocation,
         availableseat,
-        userid,
+        eventcategories,
       } = req.body;
 
       const newEvent: Prisma.EventDetailCreateInput = {
@@ -191,9 +195,28 @@ export const eventController = {
         },
       };
 
-      await prisma.eventDetail.create({
+      const newEv = await prisma.eventDetail.create({
         data: newEvent,
       });
+
+      // ini untuk EventCategory .. frontend - multiselect
+      const eventcategoriesInsert = eventcategories.map((eventId: number) => {
+        return {
+          event_id: newEv.eventid,
+          category_id: eventId,
+        };
+      });
+
+      // console.log(eventcategoriesInsert);
+
+      const ec = await prisma.eventCategory.createMany({
+        data: eventcategoriesInsert,
+      });
+
+      console.log(ec);
+
+      //endofcode
+
       res.send({
         success: true,
         message: "data berhasil ditambahkan",

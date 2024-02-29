@@ -26,17 +26,6 @@ function AddEventComponent({ editId, fetchEvents }) {
   };
   const upload = useRef(null);
 
-  const formik = useFormik({
-    initialValues: intialEvent,
-    onSubmit: () => {
-      console.log("test onsubmit formik");
-      simpan();
-    },
-  });
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik.values]);
-
   // DropdownLocation
   const [location, setLocation] = useState([]);
 
@@ -49,11 +38,32 @@ function AddEventComponent({ editId, fetchEvents }) {
       .catch((err) => console.log(err));
   };
 
-  const ubah = async (id) => {
-    const res = await axiosInstance().get("/events/" + id);
-    console.log(res.data);
+  const formik = useFormik({
+    initialValues: intialEvent,
+    onSubmit: () => {
+      // console.log("test onsubmit formik");
+      simpan();
+    },
+  });
+
+  const { RangePicker } = DatePicker;
+  // https://ant.design/components/date-picker#components-date-picker-demo-disabled-date
+
+  const inputDate = () => {
+    const [date, setDate] = useState(null);
+    const disabledDate = (current, { from }) => {
+      if (from) {
+        return Math.abs(current.diff(from, "days")) >= 7;
+      }
+      return false;
+    };
+  };
+
+  const ubah = async (eventid) => {
+    const res = await axiosInstance().get("/events/" + eventid);
+    // console.log(res.data);
     const event = res.data.result;
-    formik.setFieldValue("id", event.eventid);
+    formik.setFieldValue("eventid", event.eventid);
     formik.setFieldValue("eventname", event.eventname);
     formik.setFieldValue("eventlocation", event.location_id);
     formik.setFieldValue("eventposter", event.eventposter);
@@ -70,28 +80,6 @@ function AddEventComponent({ editId, fetchEvents }) {
     formik.setFieldValue("eventtype", event.eventtype);
     formik.setFieldValue("availableseat", event.availableseat);
   };
-
-  useEffect(() => {
-    if (editId) ubah(editId);
-  }, [editId]);
-
-  useEffect(() => {
-    fetchLocation();
-  }, []);
-
-  const { RangePicker } = DatePicker;
-  // https://ant.design/components/date-picker#components-date-picker-demo-disabled-date
-
-  const inputDate = () => {
-    const [date, setDate] = useState(null);
-    const disabledDate = (current, { from }) => {
-      if (from) {
-        return Math.abs(current.diff(from, "days")) >= 7;
-      }
-      return false;
-    };
-  };
-
   const simpan = () => {
     console.log(formik.values);
     const form = new FormData();
@@ -105,9 +93,9 @@ function AddEventComponent({ editId, fetchEvents }) {
     form.append("eventenddate", formik.values.eventstartdate);
     form.append("availableseat", formik.values.availableseat);
 
-    if (formik.values.id) {
+    if (formik.values.eventid) {
       axiosInstance()
-        .patch("/events" + formik.values.id, form)
+        .patch("/events/" + formik.values.eventid, form)
         .then(() => {
           alert("event detail berhasil diedit");
           fetchEvents();
@@ -117,7 +105,7 @@ function AddEventComponent({ editId, fetchEvents }) {
         });
     } else {
       axiosInstanceSSR()
-        .post("/events", form)
+        .post("/events/", form)
         .then(() => {
           alert("data berhasil ditambahkan");
           fetchEvents();
@@ -129,6 +117,17 @@ function AddEventComponent({ editId, fetchEvents }) {
     // formik.resetForm();
   };
 
+  useEffect(() => {
+    console.log(formik.values);
+  }, [formik.values]);
+
+  useEffect(() => {
+    if (editId) ubah(editId);
+  }, [editId]);
+
+  useEffect(() => {
+    fetchLocation();
+  }, []);
   return (
     <div>
       <form id="form" action="" onSubmit={formik.handleSubmit}>

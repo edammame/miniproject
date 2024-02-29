@@ -148,7 +148,7 @@ export function PaymentComponent() {
           variant="contained"
           onClick={handleOpen}
         >
-          Bank Transfer
+          Internet Banking
         </button>
 
         <PaymentModal open={open} handleClose={handleClose} />

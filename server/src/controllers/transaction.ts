@@ -16,6 +16,16 @@ export const transactionController = {
               vouchername: true,
             },
           },
+          eventtransaction: {
+            select: {
+              event: {
+                select: {
+                  eventid: true,
+                  eventname: true,
+                },
+              },
+            },
+          },
         },
         where: {
           user_id: req.user?.user_id,
@@ -40,7 +50,7 @@ export const transactionController = {
         totalprice,
         user_id,
         voucher_id,
-        transactionid,
+        eventtransaction,
       } = req.body;
 
       const newTransaction: Prisma.TransactionCreateInput = {
@@ -53,9 +63,24 @@ export const transactionController = {
         voucher: { connect: { voucherid: voucher_id } },
       };
 
-      await prisma.transaction.create({
+      const newTs = await prisma.transaction.create({
         data: newTransaction,
       });
+
+      const eventtransactionInsert = eventtransaction.map((eventId: number) => {
+        return {
+          transaction_id: newTs.transactionid,
+          event_id: eventId,
+        };
+      });
+
+      console.log(eventtransactionInsert, "testing eventr");
+
+      const et = await prisma.eventTransaction.createMany({
+        data: eventtransactionInsert,
+      });
+
+      console.log(et);
 
       res.send({
         success: true,
@@ -67,4 +92,62 @@ export const transactionController = {
       next({ message: "failed to post transaction" });
     }
   },
+
+  async getCountDataTransaction(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { eventid, eventname } = req.params;
+      const countTransactionByeventid = await prisma.$queryRaw`
+      select count(*) from EventTransaction et
+      join Transaction t on t.transactionid = et.transaction_id
+      where et.event_id= ${eventid}
+      `;
+
+      const countTransactionByeventname = await prisma.$queryRaw`
+      select count(*) from EventTransaction et
+      join Transaction t on t.transactionid = et.transaction_id
+      where et.event_id= ${eventid}
+      `;
+
+      console.log(countTransactionByeventid);
+
+      res.send({
+        success: true,
+        result: countTransactionByeventid,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  //totaltransaction&event
+  // async sumDataTransactionbyEvent(
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ) {
+  //   try {
+  //     const totalTransaction = await prisma.transaction.aggregate({
+  //       _sum: {
+  //         totalprice: true,
+  //       },
+  //       _when: {
+  //           eventtransaction: {
+  //             event_id: {
+  //             eventname,
+  //             },
+  //           } ,
+  //       }
+  //     });
+  //     res.send({
+  //       success: true,
+  //       result: totalTransaction,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // },
 };
