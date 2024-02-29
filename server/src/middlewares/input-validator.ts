@@ -1,11 +1,8 @@
 import Joi from "joi";
-import { Response, Request, NextFunction } from "express";
 
 const schema = Joi.object({
   email: Joi.string().required().email().message("email tidak sesuai"),
-  repeat_password: Joi.valid(Joi.ref("password")).message(
-    "password harus sama"
-  ),
+
   password: Joi.string()
     .min(8)
     .max(16)
@@ -56,22 +53,3 @@ const schema = Joi.object({
     .max(16)
     .message("require minimal 3 characther"),
 });
-
-export const validateRegister = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { email, password, username } = req.body;
-    await schema.validateAsync({
-      email,
-      password,
-      username,
-      //   repeat_password,
-    });
-    next();
-  } catch (error) {
-    next(error);
-  }
-};

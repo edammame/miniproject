@@ -1,35 +1,46 @@
 "use client";
-import React from "react";
+import React, { MaterialTailwind } from "react";
+import NavbarComponent from "@/components/organizer/navbarorganizer";
+
 // import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
+
 import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
-// import OrganizerProductCard from "@/app/components/organizer/organizerCard";
 import { IoSearch } from "react-icons/io5";
-// import { LuCopyPlus } from "react-icons/lu";
+import Link from "next/link";
+
+// ReactIcons
+import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
+import { FiDelete } from "react-icons/fi";
+import { MdOutlineQrCode2 } from "react-icons/md";
+
+//Pagination
+import { Pagination as MuiPagination } from "@mui/material";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-// import {
-//   ArrowDownTrayIcon,
-//   MagnifyingGlassIcon,
-// } from "@heroicons/react/24/outline";
 import {
   Card,
-  CardHeader, 
+  CardHeader,
   Typography,
   Button,
   CardBody,
   Chip,
   CardFooter,
-  Avatar,
   IconButton,
   Tooltip,
   Input,
+  ThemeProvider,
 } from "@material-tailwind/react";
 import AddEventComponent from "../../../components/organizer/organizerCard";
+import NavnpbarComponent from "@/components/organizer/navbarorganizer";
+import moment from "moment";
+import SideBar from "@/components/sidebar";
 
 function DashboardPage() {
   {
@@ -37,6 +48,7 @@ function DashboardPage() {
   }
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
+  const [editId, setEditId] = useState(0);
 
   const [value] = useDebounce(search, 500);
 
@@ -52,8 +64,9 @@ function DashboardPage() {
   const tableHead = [
     "Event Name",
     "Ticket Price",
-    "Date-Time",
-    "Status",
+    "Start Date",
+    "End Date",
+    "Type",
     "Location",
   ];
 
@@ -67,7 +80,8 @@ function DashboardPage() {
         .delete("/events/" + id)
         .then(() => {
           alert(`id ${id} berhasil dihapus`);
-          fetchProducts();
+          fetchEvents();
+          console.log(id);
         })
         .catch((err) => console.log(err));
   };
@@ -77,6 +91,9 @@ function DashboardPage() {
       .get("/events/", {
         params: {
           eventname: search,
+          location: search,
+          eventlocation: search,
+          category_id: search,
         },
       })
       .then((res) => {
@@ -89,13 +106,21 @@ function DashboardPage() {
     fetchEvents();
   }, [value]);
 
+  {
+    /* Pagination */
+  }
+  const [page, setPage] = React.useState(1);
+  const totalPages = 10;
+
   return (
     <>
       <div className="w-full bg-[#F1F1F1]">
+        <SideBar />
         <div className="flex flex-col justify-center  max-w-[1000px] w-full items-center m-auto  ">
           <div className="w-full text-black font-semibold p-4 text-lg">
             Organizer Event Management Dashboard
           </div>
+          <NavbarComponent />
           {/* Search Bar  */}
           <div className="py-5 w-full ">
             <div className="flex px-3 items-center gap-3 border-gray-300 border-b w-72  p-2">
@@ -110,37 +135,36 @@ function DashboardPage() {
             </div>
           </div>
 
+          <div className=" bg-[#FABB11] flex flex-col-2 font-semibold text-[16px] py-3 justify-between gap-2 px-4 w-full rounded-md">
+            <div className="flex flex-col-2 gap-2 text-[16px]">
+              <MdOutlineQrCode2 className="text-[26px]" />
+              Event Last Added
+            </div>
+          </div>
+
           {/* /Trial: https://www.material-tailwind.com/docs/react/table */}
-          <Card className="h-full w-full ">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
-              <div className=" flex flex-col justify-between gap-3 md:flex-row md:items-center">
-                <div>
-                  <Typography
-                    className=" text-base font-semibold"
-                    color="blue-gray"
-                  >
-                    Event Last Added
-                  </Typography>
-                  <Typography color="gray" className="mt-1 font-normal text-sm">
-                    These are list of event details that are added to the
-                    database
-                  </Typography>
-                </div>
-              </div>
+          <Card className="h-full w-full items-center ">
+            <CardHeader
+              floated={false}
+              shadow={false}
+              className="rounded-none text-xs font-normal w-full text-left"
+            >
+              <p className="px-5">Database event details</p>
             </CardHeader>
-            <CardBody className="overflow-scroll px-0">
-              <table className="w-full min-w-max table-auto text-left">
+
+            <CardBody className="overflow-scroll w-full ">
+              <table className="table-auto overflow-scroll w-full ">
                 <thead>
                   <tr>
                     {tableHead.map((head) => (
                       <th
                         key={head}
-                        className="border-y text-center border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
+                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
                       >
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-normal leading-none opacity-70"
+                          className="text-center font-semibold text-[12px] leading-none opacity-70"
                         >
                           {head}
                         </Typography>
@@ -148,32 +172,34 @@ function DashboardPage() {
                     ))}
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="h-[200px] ">
                   {events.map(
                     (
                       {
+                        eventid,
                         eventname,
                         eventprice,
-                        eventdate,
-                        eventstatus,
-                        eventlocation,
-                        voucherid,
+                        eventstartdate,
+                        eventenddate,
+                        eventtype,
+                        location,
+                        user,
                       },
                       index
                     ) => {
                       const isLast = index === events.length - 1;
                       const classes = isLast
-                        ? "p-4"
-                        : "p-4 border-b border-blue-gray-50";
+                        ? "p-2 text-center justify-items-center "
+                        : "p-2 border-b border-blue-gray-50 justify-items-center text-center";
 
                       return (
-                        <tr key={key}>
+                        <tr key={eventname}>
                           <td className={classes}>
-                            <div className="flex items-center gap-2">
+                            <div className="flex text-left">
                               <Typography
                                 variant="small"
                                 color="blue-gray"
-                                className="font-bold"
+                                className=" font-normal text-[12px] px-1"
                               >
                                 {eventname}
                               </Typography>
@@ -185,7 +211,7 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventprice}
+                              Rp {Number(eventprice).toLocaleString("id-ID")}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -194,7 +220,20 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventdate}
+                              {moment(eventstartdate).format(
+                                "YYYY-MM-DD hh:mm:ss"
+                              )}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {moment(eventenddate).format(
+                                "YYYY-MM-DD hh:mm:ss"
+                              )}{" "}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -202,13 +241,14 @@ function DashboardPage() {
                               <Chip
                                 size="sm"
                                 variant="ghost"
-                                value={eventstatus}
+                                value={eventtype}
+                                className=" justify-items-center w-[80px]"
                                 color={
-                                  eventstatus === "available"
+                                  eventtype === "free"
                                     ? "green"
-                                    : eventstatus === "fully booked"
-                                    ? "amber"
-                                    : "red"
+                                    : eventtype === "paid"
+                                    ? "blue"
+                                    : "yellow"
                                 }
                               />
                             </div>
@@ -219,29 +259,32 @@ function DashboardPage() {
                               color="blue-gray"
                               className="font-normal"
                             >
-                              {eventlocation}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {voucherid}
+                              {location.eventlocation}
                             </Typography>
                           </td>
 
-                          <td className={classes}>
+                          <td className="flex flex-col-2">
                             <Tooltip content="Edit Database">
-                              <IconButton variant="text" onClick={ubah}>
-                                Edit
-                              </IconButton>
+                              <button
+                                className=" text-gray-600 text-[16px] p-2"
+                                onClick={() => {
+                                  setEditId(eventid);
+                                }}
+                              >
+                                <FaRegEdit />
+                                {/* Edit */}
+                              </button>
                             </Tooltip>
                             <Tooltip content="Delete Database">
-                              <IconButton variant="text" onClick={hapus}>
-                                Delete
-                              </IconButton>
+                              <button
+                                className=" text-gray-600 text-[18px] p-2"
+                                onClick={() => {
+                                  hapus(eventid);
+                                }}
+                              >
+                                <FiDelete />
+                                {/* Delete */}
+                              </button>
                             </Tooltip>
                           </td>
                         </tr>
@@ -251,166 +294,60 @@ function DashboardPage() {
                 </tbody>
               </table>
             </CardBody>
-          </Card>
 
-          {/* Event List */}
-          {/* <div className="text-left text-black font-semibold py-3  w-full">
-            {" "}
-            Event Database
-          </div>
-          <table className="w-full">
-            <tr className=" text-center text-black text-[14px] font-semibold">
-              <th>Event Poster</th>
-              <th>Event Name</th>
-              <th>Event Ticket Price</th>
-            </tr>
-            {events.map((event, key) => (
-              <OrganizerProductCard
-                {...event}
-                key={key}
-                ubah={() => ubah(event.id)}
-                hapus={() => hapus(event.id)}
+            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+              <MuiPagination
+                color="primary"
+                count={totalPages}
+                page={page}
+                onChange={(_, newPage) => setPage(newPage)}
               />
-            ))}
-          </table>
-           */}
-
-          {/* Accordion*/}
-
+            </CardFooter>
+          </Card>
           <Accordion open={open === 1} className="mt-14 px-5">
             <AccordionHeader
-              className="text-base"
+              className="text-[14px]"
               onClick={() => handleOpen(1)}
             >
               New Event Details
             </AccordionHeader>
             <AccordionBody>
-              {/* <div className="w-full py-3">
-                <form id="form" action="" onSubmit={formik.handleSubmit}>
-                  <h1 className="font-semibold text-base text-black py-2">
-                    Add Event Information Details
-                  </h1>
-                  <div className="flex flex-col gap-1 text-black  font-normal">
-                    <table>
-                      <tr>
-                        <td className="px-2 "> Event Name</td>
-                        <td>
-                          <input
-                            type="text"
-                            placeholder=" Event Name"
-                            className="border border-gray-300 p-1 text-[14px] text-gray-300 rounded-md w-96 "
-                            required
-                            id="eventname"
-                            // value={formik.values.eventname}
-                            onChange={formik.handleChange}
-                            // onChange={(e) => {
-                            //   formik.setFieldValue("product_name", e.target.value);
-                            // }}
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-2 "> Event Poster</td>
-                        <td>
-                          <input
-                            type="file"
-                            placeholder=" Poster Url"
-                            className="border p-1 text-[14px] text-black rounded-md  w-96 hidden"
-                            id="eventposter"
-                            onChange={(e) => renderFile(e)}
-                            ref={upload}
-                          />
-                          <button
-                            className="bg-full bg-[#FADB7A] text-[14px] text-black px-3 h-8 w-38 flex gap-2
-                          items-center
-                         rounded-md "
-                            type="button"
-                            onClick={() => {
-                              upload.current.click();
-                            }}
-                          >
-                            <TbUpload />
-                            Click to Upload File
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-2 "> Event Ticket Price</td>
-                        <td>
-                          <input
-                            type="number"
-                            placeholder=" Ticket Price"
-                            className="border border-gray-300 p-1 text-[14px] text-gray-300 rounded-md w-96"
-                            min={0}
-                            required
-                            id="price"
-                            // value={formik.values.eventprice}
-                            onChange={formik.handleChange}
-                          />
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td className="px-2 "> Event Description</td>
-                        <td>
-                          <textarea
-                            type="text"
-                            placeholder=" Event description"
-                            className="border border-gray-300 text-[14px] text-gray-300 rounded-md p-1 w-96"
-                            required
-                            // value={formik.values.eventdescription}
-                            id="eventdescription"
-                            onChange={formik.handleChange}
-                          />
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td className="px-2 "> Event Date</td>
-                        <td>
-                          <RangePicker
-                            // value={formik.values.eventdate}
-                            // disabledDate = {disabledDate}
-                            showTime
-                            onChange={(e) => setDate(e.target.value)}
-                          />
-                        </td>
-                      </tr>
-                    </table>
-                    <tr className="flex gap-2">
-                      <button
-                        className=" bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
-                        type="submit"
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="bg-[#FADB7A] hover:bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
-                        onClick={() => formik.resetForm()}
-                      >
-                        Reset
-                      </button>
-                    </tr>
-                  </div>
-                </form>
-              </div> */}
-              <AddEventComponent />
+              <AddEventComponent editId={editId} fetchEvents={fetchEvents} />
             </AccordionBody>
           </Accordion>
           <Accordion open={open === 2}>
             <AccordionHeader
-              className="text-base  px-5"
+              className="text-[14px] px-5"
               onClick={() => handleOpen(2)}
             >
-              Recent Transaction
+              Voucher Details
             </AccordionHeader>
             <AccordionBody>
-              creating new voucher code will be here
+              <div className="">
+                {/* Add New Voucher */}
+                <div>
+                  <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+                    <MdOutlineQrCode2 className="text-[26px]" /> Create New
+                    Voucher Promotion
+                  </div>
+                  <div className="bg-white p-4 flex flex-col gap-3">
+                    <div className=" text-[12.5px] font-medium">
+                      Create promotion voucher for your future event
+                    </div>
+                    <Link
+                      href="/organizer/voucher"
+                      className=" text-[12.5px] w-[128px] h-[40px] px-10 py-2.5 border rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+                    >
+                      Create
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </AccordionBody>
           </Accordion>
           <Accordion open={open === 3}>
             <AccordionHeader
-              className="text-base  px-5"
+              className="text-[14px] px-5"
               onClick={() => handleOpen(3)}
             >
               Overview & Statistic

@@ -47,7 +47,7 @@ export function NavbarComponent() {
             className="text-sm font-semibold hidden lg:inline-block"
             href={"/auth/customerRegister"}
           >
-            Sign in
+            Sign Up
           </a>
         </div>
         <IconButton

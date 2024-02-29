@@ -1,4 +1,4 @@
-import SidebarComponent from "@/components/organizer/sidebar";
+import NavbarComponent from "@/components/organizer/navbarorganizer";
 import { FaRegFolderOpen } from "react-icons/fa";
 
 function AttendeePage() {
@@ -11,7 +11,7 @@ function AttendeePage() {
             <div className="w-full text-black font-semibold p-4 text-lg">
               Organizer Event Management Dashboard
             </div>
-            <SidebarComponent />
+            <NavbarComponent />
 
             {/* Header */}
             <div className=" bg-[#FABB11] mt-3 flex flex-col-2 font-semibold text-[16px] py-3 justify-between gap-2 px-4 w-full rounded-md">

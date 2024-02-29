@@ -21,7 +21,7 @@ routes.push(new Route("/"), guestOnly);
 routes.push(new Route("/auth/customerRegister", guestOnly));
 routes.push(new Route("/auth/orgenizerRegister", guestOnly));
 routes.push(new Route("/auth/login", guestOnly));
-routes.push(new Route("/customer/events")); //, needLogin
+routes.push(new Route("/customer/events", needLogin));
 routes.push(new Route("/customer/events/[eventid]"));
 routes.push(new Route("/organizer/dashboard", organizerOnly));
 routes.push(new Route("/organizer/home", organizerOnly));

@@ -1,7 +1,12 @@
+"use client";
+import moment from "moment/moment";
+import { FaRegEdit } from "react-icons/fa";
+import { FiDelete } from "react-icons/fi";
+
 function DatabaseComponent({
-  vouchercode,
+  voucherid,
   vouchername,
-  voucherpromodesc,
+  // voucherpromodesc,
   discount,
   voucherstartdate,
   voucherenddate,
@@ -9,27 +14,30 @@ function DatabaseComponent({
   hapus,
 }) {
   return (
-    <tr className="text-center">
-      <td>{vouchercode}</td>
-      <td>{vouchername}</td>
-      <td className="text-left">{voucherpromodesc}</td>
-      <td className=" font-semibold">
+    <tr className="text-center text-[12px]">
+      {/* <td>{voucherid}</td> */}
+      <td className="lg:w-[100px]">{vouchername}</td>
+      {/* <td className="text-left">{voucherpromodesc}</td> */}
+      <td className=" lg:w-[100px] font-semibold">
         IDR {Number(discount).toLocaleString("id-ID")}
       </td>
-      <td>{voucherstartdate}</td>
-      <td>{voucherenddate}</td>
-      <td className="flex gap-5 justify-center items-center h-[70px]">
-        <button
-          onClick={edit}
-          className="h-[30px] border w-[72px] rounded-md text-white bg-black hover:bg-white border-black hover:text-black"
+      <td className="lg:w-[100px]">
+        {moment(voucherstartdate).format("YYYY-MM-DD hh:mm:ss")}
+      </td>
+      <td className="lg:w-[100px]">
+        {moment(voucherenddate).format("YYYY-MM-DD hh:mm:ss")}
+      </td>
+      <td className=" px-3 w-[20px] justify-center items-center h-[70px]">
+        {/* <button
+          onClick={() => edit(voucherid)}
+          className=" border rounded-md text-black"
         >
-          Edit
-        </button>
-        <button
-          className="h-[30px] border w-[72px] rounded-md text-white bg-black hover:bg-white border-black hover:text-black"
-          onClick={hapus}
-        >
-          Delete
+          <FaRegEdit />
+          {/* Edit */}
+        {/* </button> */}
+        <button className=" rounded-md text-black" onClick={hapus}>
+          <FiDelete />
+          {/* Delete */}
         </button>
       </td>
     </tr>

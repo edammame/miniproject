@@ -4,6 +4,9 @@ const initialState = {
   email: "",
   id: 0,
   name: "",
+  username: "",
+  customerReferralNo: "",
+  customerTotalPoints: "",
 };
 
 const userSlice = createSlice({

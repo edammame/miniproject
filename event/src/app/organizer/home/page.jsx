@@ -1,4 +1,4 @@
-import SidebarComponent from "@/components/organizer/sidebar";
+import NavbarComponent from "@/components/organizer/navbarorganizer";
 
 function HomePage() {
   return (
@@ -8,7 +8,7 @@ function HomePage() {
           <div className="w-full text-black font-semibold p-4 text-lg">
             Organizer Event Management Dashboard
           </div>
-          <SidebarComponent />
+          <NavbarComponent />
           tampilin data organizer disini?
         </div>
       </div>

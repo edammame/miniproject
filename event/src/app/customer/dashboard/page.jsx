@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import SideBar from "@/components/customer/sidebar";
+import SideBar from "@/components/sidebar";
 import UserAvatar from "@/components/useravatar";
 
-function ProfileForm() {
+function ProfileForm( username, email ) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
 

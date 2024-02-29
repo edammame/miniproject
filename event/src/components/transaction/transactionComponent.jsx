@@ -1,49 +1,72 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { TbUpload } from "react-icons/tb";
+import Link from "next/link";
+import { axiosInstance } from "@/axios/axios";
+import { LuTicket } from "react-icons/lu";
+import React from "react";
+import { useEffect } from "react";
+import { PaymentComponent } from "@/components/transaction/paymentComponent";
+import { FaArrowRight } from "react-icons/fa";
 
-function UploadTfComponent() {
-  // UploadBuktiTransfer
-  const upload = useRef(null);
+function ButtontoTransactionComponent({
+  event,
+  discountprice,
+  voucherId,
+  user,
+  eventtransaction,
+}) {
+  const postTrasaction = () => {
+    if (window.confirm("Confirm to buy this event ticket?")) {
+      axiosInstance()
+        .post("/transaction", {
+          qty: 1,
+          subtotalprice: Number(event?.eventprice),
+          discountprice: Number(discountprice),
+          totalprice: Number(event?.eventprice) - Number(discountprice),
+          user_id: user?.user_id,
+          voucher_id: voucherId,
+          event_id: event.eventid,
+        })
+        .then((res) => {})
+        .catch((err) => console.log(err));
+    } else {
+      alert("Transaction canceled, Please Try Again");
+      location.reload();
+    }
+  };
+
+  // useEffect(() => {
+  //   postTrasaction();
+  // }, []);
 
   return (
     <>
-      {/* Upload Bukti Transfer */}
-      <div className="bg-white p-5 flex flex-col">
-        <div className=" text-[12.5px] font-semibold">
-          Upload proof of payment here
+      <div className="bg-[#FABB11] rounded-md w-full h-full font-semibold text-[18px] grid py-3 px-4 gap-3">
+        <div className="w-full h-[100px] p-2 font-semibold text-[18px] flex flex-cols gap-3">
+          {/* <LuTicket className="text-[24px] " /> */}
+          Proceed with Payment
         </div>
-        <form action="" className="flex gap-3" id="form">
-          <input
-            type="file"
-            placeholder=" Poster Url"
-            className="border p-1 text-[12.5px] text-black rounded-md  w-96 hidden"
-            id="eventposter"
-            onChange={(e) => renderFile(e)}
-            ref={upload}
-          />
-          <button
-            className="bg-full bg-[#FADB7A] h-[40px] mt-1 text-[12.5px] border w-[128px] text-black px-3  w-38 flex gap-2
-items-center
-rounded-md "
-            type="button"
-            onClick={() => {
-              upload.current.click();
-            }}
-          >
-            <TbUpload />
-            Payment
-          </button>
 
-          <button
-            type="submit"
-            className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+        <div className="p-5 py-2 rounded-2xl bg-[#FFFFFF] lg:mx-96 flex flex-cols gap-2 justify-between items-center">
+          <div className=" text-[14px] p-2 flex flex-cols gap-2 items-center">
+            Payment Method
+            <FaArrowRight className=" text-[14px]" />
+          </div>
+          <PaymentComponent className="p-2 " />
+        </div>
+      </div>
+      <div className="p-4">
+        <button onClick={postTrasaction}>
+          <Link
+            href="/payment"
+            className=" text-[10.5px] w-[128px] h-[40px] px-10 py-2.5 border rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
           >
-            Upload
-          </button>
-        </form>
-      </div>{" "}
+            Proceed to Payment
+          </Link>
+        </button>
+      </div>
     </>
   );
 }
-export default UploadTfComponent;
+export default ButtontoTransactionComponent;

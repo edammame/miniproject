@@ -1,7 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import { prisma } from "..";
-import { Prisma } from "@prisma/client";
-import { ReqUser } from "../middlewares/auth-middleware";
 
 export const locationController = {
   async getLocation(req: Request, res: Response, next: NextFunction) {

@@ -54,7 +54,7 @@ export function EventCard({
   return (
     <Link
       className="flex flex-col items-center md:items-start "
-      href={"/customer/events/[eventid].js"}
+      href={"/customer/events/[:eventid]"}
     >
       <img
         src={process.env.API_URL + eventposter}
@@ -62,13 +62,13 @@ export function EventCard({
         alt=""
       />
       <div className="p-5 px-0 w-full h-full flex flex-col justify-between gap-2 ">
-        <div className=" font-bold w-full ">test {eventname}</div>
+        <div className=" font-bold w-full ">{eventname}</div>
 
-        <Typography>hahaha {eventdescription}</Typography>
+        <Typography>{eventdescription}</Typography>
 
-        <h3>musik {eventtype}</h3>
+        <h3>{eventtype}</h3>
 
-        <div>jakarta{eventlocation}</div>
+        <div>{eventlocation}</div>
 
         <div className="text-[#249C58] font-semibold  ">
           IDR {Number(eventprice).toLocaleString()}

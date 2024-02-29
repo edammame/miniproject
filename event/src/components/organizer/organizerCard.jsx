@@ -1,54 +1,52 @@
 "use client";
-import { axiosInstance } from "../../axios/axios";
-import { useFormik } from "formik";
-import { useEffect, useRef } from "react";
+import { axiosInstance, axiosInstanceSSR } from "../../axios/axios";
+import { FieldArray, useFormik } from "formik";
+import { useEffect, useRef, useState } from "react";
 import { TbUpload } from "react-icons/tb";
 import { DatePicker } from "antd";
 import { Select, Option } from "@material-tailwind/react";
+import moment from "moment/moment";
+import dayjs from "dayjs";
+import { MdEventNote } from "react-icons/md";
 
-function AddEventComponent() {
+function AddEventComponent({ editId, fetchEvents }) {
   const intialEvent = {
     eventname: "",
     eventprice: 0,
-    starteventdate: "",
-    endeventdate: "",
-    eventposter: null,
+    eventstartdate: new Date(),
+    eventenddate: new Date(),
+    eventposter: "",
+    image: null,
     eventdescription: "",
-    eventtype: "",
-    eventstatus: "",
-    eventlocation: "",
+    eventtype: "Free",
+    location_id: "",
     voucherid: 0,
     availableseat: 0,
     reservedseat: "",
-    id: 0,
+    eventid: 0,
   };
   const upload = useRef(null);
+
+  // DropdownLocation
+  const [location, setLocation] = useState([]);
+
+  const fetchLocation = () => {
+    axiosInstance()
+      .get("/location")
+      .then((res) => {
+        setLocation(res.data.result);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const formik = useFormik({
     initialValues: intialEvent,
     onSubmit: () => {
-      console.log("test onsubmit formik");
+      // console.log("test onsubmit formik");
       simpan();
     },
   });
-  useEffect(() => {
-    console.log(formik.values);
-  }, [formik.values]);
 
-  const ubah = async (id) => {
-    const res = await axiosInstance().get("/events/" + id);
-    const event = res.data.result;
-    formik.setFieldValue("id", event.id);
-    formik.setFieldValue("eventname", event.eventname);
-    formik.setFieldValue("eventlocation", event.eventlocation);
-    formik.setFieldValue("eventposter", event.eventposter);
-    formik.setFieldValue("eventprice", event.eventprice);
-    formik.setFieldValue("eventdescription", event.eventdescription);
-    // formik.setFieldValue("eventdate", event.eventdate);
-    // formik.setFieldValue("eventdate", event.eventdate);
-    formik.setFieldValue("eventtype", event.eventtype);
-    formik.setFieldValue("availableseat", event.availableseat);
-  };
   const { RangePicker } = DatePicker;
   // https://ant.design/components/date-picker#components-date-picker-demo-disabled-date
 
@@ -62,22 +60,44 @@ function AddEventComponent() {
     };
   };
 
+  const ubah = async (eventid) => {
+    const res = await axiosInstance().get("/events/" + eventid);
+    // console.log(res.data);
+    const event = res.data.result;
+    formik.setFieldValue("eventid", event.eventid);
+    formik.setFieldValue("eventname", event.eventname);
+    formik.setFieldValue("eventlocation", event.location_id);
+    formik.setFieldValue("eventposter", event.eventposter);
+    formik.setFieldValue("eventprice", event.eventprice);
+    formik.setFieldValue("eventdescription", event.eventdescription);
+    formik.setFieldValue(
+      "eventstartdate",
+      moment(event.eventstartdate).format("YYYY-MM-DD hh:mm:ss")
+    );
+    formik.setFieldValue(
+      "eventenddate",
+      moment(event.eventenddate).format("YYYY-MM-DD hh:mm:ss")
+    );
+    formik.setFieldValue("eventtype", event.eventtype);
+    formik.setFieldValue("availableseat", event.availableseat);
+  };
   const simpan = () => {
     console.log(formik.values);
     const form = new FormData();
     form.append("eventname", formik.values.eventname);
-    form.append("eventlocation", formik.values.eventlocation);
+    form.append("eventlocation", formik.values.location_id);
+    form.append("image", formik.values.image);
     form.append("eventposter", formik.values.eventposter);
     form.append("eventprice", formik.values.eventprice);
     form.append("eventdescription", formik.values.eventdescription);
     form.append("eventtype", formik.values.eventtype);
-    form.append("starteventdate", formik.values.starteventdate);
-    form.append("endeventdate", formik.values.endeventdate);
+    form.append("eventstartdate", new Date(formik.values.eventstartdate));
+    form.append("eventenddate", formik.values.eventstartdate);
     form.append("availableseat", formik.values.availableseat);
 
-    if (formik.values.id) {
+    if (formik.values.eventid) {
       axiosInstance()
-        .patch("/events/" + formik.values.id, form)
+        .patch("/events/" + formik.values.eventid, form)
         .then(() => {
           alert("event detail berhasil diedit");
           fetchEvents();
@@ -86,8 +106,7 @@ function AddEventComponent() {
           console.log(err);
         });
     } else {
-      axiosInstance();
-      axiosInstance()
+      axiosInstanceSSR()
         .post("/events/", form)
         .then(() => {
           alert("data berhasil ditambahkan");
@@ -97,16 +116,32 @@ function AddEventComponent() {
           console.log(err);
         });
     }
-    formik.resetForm();
+    // formik.resetForm();
   };
 
+  useEffect(() => {
+    console.log(formik.values);
+  }, [formik.values]);
+
+  useEffect(() => {
+    if (editId) ubah(editId);
+  }, [editId]);
+
+  useEffect(() => {
+    fetchLocation();
+  }, []);
+
+  const renderFile = (e) => {
+    formik.setFieldValue("image", e.target.files[0]);
+  };
   return (
     <div>
-      {" "}
-      {/* <div className="w-full py-3"> */}
       <form id="form" action="" onSubmit={formik.handleSubmit}>
         `{" "}
         <div className="flex flex-col gap-1 text-black font-normal">
+          <div className=" bg-[#6CBF67] flex flex-col-2 rounded-md font-semibold text-[16px] py-3 gap-2 px-4">
+            <MdEventNote className="text-[26px]" /> Create New Event Details
+          </div>
           <table className=" ">
             <tbody>
               <tr>
@@ -120,9 +155,6 @@ function AddEventComponent() {
                     id="eventname"
                     value={formik.values.eventname}
                     onChange={formik.handleChange}
-                    // onChange={(e) => {
-                    //   formik.setFieldValue("product_name", e.target.value);
-                    // }}
                   />
                 </td>
               </tr>
@@ -130,18 +162,22 @@ function AddEventComponent() {
               <tr>
                 <td className="px-2 text-[12.5px] font-normal "> Location</td>
                 <td>
-                  <input
-                    type="text"
-                    placeholder=" Event Location Detail"
-                    className="border border-gray-300 py-1 text-[12.5px]  text-black rounded-md min-w-64"
-                    required
-                    id="eventlocation"
+                  <Select
+                    id="location_id"
+                    label="Event Location"
+                    name="eventlocation"
+                    className="bg-white"
                     value={formik.values.eventlocation}
-                    onChange={formik.handleChange}
-                    // onChange={(e) => {
-                    //   formik.setFieldValue("product_name", e.target.value);
-                    // }}
-                  />
+                    onChange={(value) => {
+                      formik.setFieldValue("location_id", value);
+                    }}
+                  >
+                    {location.map((location, key) => (
+                      <Option key={key} value={location.locationid}>
+                        {location.eventlocation}
+                      </Option>
+                    ))}
+                  </Select>
                 </td>
               </tr>
               <tr>
@@ -155,7 +191,7 @@ function AddEventComponent() {
                     placeholder=" Poster Url"
                     className="border p-1 text-[12.5px] text-black rounded-md  w-96 hidden"
                     id="eventposter"
-                    onChange={(e) => renderFile(e)}
+                    onChange={renderFile}
                     ref={upload}
                   />
                   <button
@@ -177,9 +213,17 @@ function AddEventComponent() {
                 <td>
                   {/* dropdown */}
                   <div className="w-64 text-[12.5px] font-normal bg-white">
-                    <Select label="Event Type">
-                      <Option>Free</Option>
-                      <Option>Paid</Option>
+                    <Select
+                      id="eventtype"
+                      label="Event Type"
+                      name="eventtype"
+                      value={formik.values.eventtype}
+                      onChange={(value) => {
+                        formik.setFieldValue("eventtype", value);
+                      }}
+                    >
+                      <Option value="free">Free</Option>
+                      <Option value="paid">Paid</Option>
                     </Select>
                   </div>
                 </td>
@@ -225,22 +269,17 @@ function AddEventComponent() {
                 <td className="px-2 text-[12.5px] font-normal"> Event Date</td>
                 <td>
                   <RangePicker
-                    // value={formik.values.eventdate}
-                    // disabledDate = {disabledDate}
-                    className="min-w-64"
-                    showTime
-                    onChange={(e) => {
-                      //   console.log(e[0].$d);
-                      //   console.log(e[1].$d);
-                      formik.setFieldValue("starteventdate", e[0].$d);
-                      formik.setFieldValue("endeventdate", e[1].$d);
-                    }}
+                    showTime={{ format: "HH:mm:ss" }}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    value={[
+                      dayjs(formik.values.starteventdate),
+                      dayjs(formik.values.endeventdate),
+                    ]}
                   />
                 </td>
               </tr>
               <tr>
                 <td className="px-2 text-[12.5px] font-normal ">
-                  {" "}
                   Available Seat
                 </td>
                 <td>
@@ -276,7 +315,6 @@ function AddEventComponent() {
         </div>
         `
       </form>
-      {/* </div> */}
     </div>
   );
 }

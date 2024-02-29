@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "antd";
-import SidebarComponent from "@/components/organizer/sidebar";
+import NavbarComponent from "@/components/organizer/navbarorganizer";
 import { MdOutlineManageHistory } from "react-icons/md";
 
 // https://ant.design/components/table
@@ -63,7 +63,7 @@ function TrstionSummaryPage() {
           <div className="w-full text-black font-semibold p-4 text-lg">
             Organizer Event Management Dashboard
           </div>
-          <SidebarComponent />
+          <NavbarComponent />
           <div className="bg-[#FABB11] font-semibold text-[14px] py-3 px-5 flex flex-col-2 gap-3 w-full rounded-md ">
             <MdOutlineManageHistory className="text-[20px]" />
             Transaction History

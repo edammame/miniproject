@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/axios/axios";
 import { functionLogin, functionLogout } from "../slices/userSlice";
 
-export const userLogin = ({ email, password }) => {
+export const userLogin = ({ username, email, password }) => {
   return async (dispatch) => {
     try {
       const res = await axiosInstance().get("/users", {
