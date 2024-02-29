@@ -7,17 +7,18 @@ const initialState = {
 };
 
 const userSlice = createSlice({
-  name: "user",
+  name: "users",
   initialState,
   reducers: {
     functionLogin: (state, action) => {
+      console.log(action.payload);
       return {
         ...state,
         ...action.payload,
       };
     },
     functionLogout: (state) => {
-      localStorage.removeItem("user");
+      localStorage.removeItem("users");
       return initialState;
     },
   },

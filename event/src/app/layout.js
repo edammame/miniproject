@@ -1,5 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { StoreProvider } from "@/redux/store";
+import ProtectedPage from "@/routes/protected-routes";
+import AuthProvider from "@/routes/auth-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,10 +13,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div>{children}</div>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <head></head>
+        <body className={inter.className}>
+          <AuthProvider>
+            <ProtectedPage>{children}</ProtectedPage>
+          </AuthProvider>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

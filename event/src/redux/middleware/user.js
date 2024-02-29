@@ -7,14 +7,14 @@ export const userLogin = ({ email, password }) => {
       const res = await axiosInstance().get("/users", {
         params: { email, password },
       });
-      // console.log(res.data.result);
-      if (res.data.result?.id) {
-        const { first_name } = res.data.result;
 
-        alert("welcome " + first_name);
+      if (res.data.result?.id) {
+        const { email } = res.data.result;
+
+        alert("welcome " + email);
         dispatch(functionLogin(res.data.result));
 
-        localStorage.setItem("user", res.data.token);
+        localStorage.setItem("users", res.data.token);
       }
       return;
     } catch (err) {
@@ -29,14 +29,14 @@ export const userLogin = ({ email, password }) => {
 export const keepLogin = () => {
   return async (dispatch) => {
     try {
-      const token = localStorage.getItem("user");
+      const token = localStorage.getItem("users");
       const res = await axiosInstance().get("/users/keep-login", {
         headers: {
           Authorization: token,
         },
       });
 
-      if (res.data.result?.id) {
+      if (res.data.result?.email) {
         dispatch(functionLogin(res.data.result));
 
         localStorage.setItem("user", res.data.token);
@@ -47,7 +47,7 @@ export const keepLogin = () => {
       return;
     } catch (err) {
       localStorage.removeItem("auth");
-      dispatch(functionLogout);
+      dispatch(functionLogout());
       return err.message;
     }
   };

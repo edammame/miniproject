@@ -1,7 +1,10 @@
 "use client";
 import { userLogin } from "@/redux/middleware/user";
+import { useDispatch } from "react-redux";
 import Link from "next/link";
 function Page() {
+  const dispatch = useDispatch();
+
   const login = () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -16,31 +19,31 @@ function Page() {
        text-sm p-3"
       >
         <div className="flex flex-col max-w-[440px] ">
-          <h1 className=" text-3xl font-semibold">Masukan akun kamu</h1>
-          <p className="  text-[#989898] text-[13px]">
-            Belajar gratis di Namanyajugabelajar.io, dan memulai karir yang kamu
-            cita-citata sejak dalam embrio!
-          </p>
+          <h1 className=" text-3xl font-semibold">Enter Your Account</h1>
+          <p className="  text-[#989898] text-[13px]">Let's get started</p>
 
           <div className=" font-bold mt-5">Email</div>
           <input
-            className=" p-3 bg-[#F3F4F6] rounded-lg "
-            placeholder="put your email"
+            className=" p-3 bg-[#F3F4F6] rounded-lg border-none"
+            placeholder="enter email"
             id="email"
             type="email"
           ></input>
 
           <div className=" font-bold mt-5">Password</div>
           <input
-            className=" p-3 bg-[#F3F4F6] rounded-lg "
-            placeholder="******"
+            className=" p-3 bg-[#F3F4F6] rounded-lg border-none"
+            placeholder="enter password"
             id="password"
             type="password"
           ></input>
 
           <div className=" mt-4 text-xs ">
             belum punya account?{" "}
-            <Link href="/auth/register" className="text-[#4F46E5] font-bold">
+            <Link
+              href="/auth/customerRegister"
+              className="text-[#4F46E5] font-bold"
+            >
               Register
             </Link>
           </div>

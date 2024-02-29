@@ -1,11 +1,159 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+
+model User {
+  userid Int @id @default(autoincrement())
+  avatar_url String? @db.VarChar(255)
+  username String
+  password String
+  email String @unique
+  lastLoginat DateTime @default(now())
+  role Role
+  customer CustomerDetail?
+  event EventDetail[]
+  transaction Transaction[]
+  voucheruser VoucherUser[]
+  joinedAt DateTime @default(now()) 
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  isVerified Boolean @default(false)
+}
+
+enum Role {
+  customer
+  organizer
+}
+
+model CustomerDetail {
+  customerid Int @id 
+  customer User @relation(fields:[customerid], references: [userid], onDelete: NoAction,  onUpdate: NoAction)
+  role Role? @default(customer) 
+  inputRefCode String?
+  customerReferralNo String @default(uuid())
+  customerTotalPoints Int @default(0)
+  pointExpiryDate DateTime? 
+  joined_at DateTime @default(now()) 
+  updated_at DateTime @default(now())
+  deleted_at DateTime @default(now())
+  rating Rating[]
+}
+
+
+
+model EventDetail {
+  eventid Int @id @default(autoincrement())
+  eventname String
+  eventposter String? @db.VarChar(255)
+  eventdescription String
+  eventtype EventType @default(paid)
+  eventprice Decimal @db.Decimal(18,2)
+  availableseat Int 
+  eventstartdate DateTime
+  eventenddate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  user_id Int
+  user User @relation(fields:[user_id], references:[userid], onDelete: NoAction,  onUpdate: NoAction)
+  location_id Int 
+  location EventbyLocation @relation(fields:[location_id], references:[locationid], onDelete: NoAction,  onUpdate: NoAction)
+  eventtransaction EventTransaction[]
+  eventcategory EventCategory[]
+  rating Rating[]
+}
+
+enum EventType {
+  paid
+  free
+}
+
+model EventCategory { 
+  event_id Int 
+  category_id Int
+  event EventDetail @relation (fields: [event_id], references:[eventid], onDelete: NoAction,  onUpdate: NoAction)
+  category EventbyCategory @relation (fields: [category_id], references:[categoryid], onDelete: NoAction,  onUpdate: NoAction)
+   @@id([event_id, category_id])
+}
+
+model EventbyCategory { 
+  categoryid Int @id @default(autoincrement())
+  categoryname String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  eventcategory EventCategory[]
+}
+
+model EventbyLocation {
+  locationid Int @id @default(autoincrement())
+  eventlocation String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  event EventDetail[]
+}
+
+model Transaction {
+  transactionid Int @id @default(autoincrement())
+  subtotalprice Decimal @db.Decimal(18,2)
+  discountprice Decimal @db.Decimal(18,2)
+  totalprice Decimal @db.Decimal(18,2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime @default(now())
+  user_id Int
+  user User @relation(fields: [user_id], references:[userid], onDelete: NoAction,  onUpdate: NoAction)
+  eventtransaction EventTransaction[]
+  voucher_id String
+  voucher Voucher @relation(fields: [voucher_id], references:[voucherid], onDelete: NoAction,  onUpdate: NoAction)
+}
+
+model EventTransaction {
+  event_id Int
+  transaction_id Int 
+  event EventDetail @relation (fields: [event_id], references:[eventid], onDelete: NoAction, onUpdate: NoAction)
+  transaction Transaction @relation (fields: [transaction_id], references:[transactionid], onDelete: NoAction,  onUpdate: NoAction)
+  @@id([event_id,transaction_id])
+}
+
+model Voucher {
+voucherid String @id @default(uuid())
+vouchername String
+voucherpromodesc String? @db.VarChar(255)
+discount Decimal @db.Decimal(18,2)
+voucherstartdate DateTime
+voucherenddate DateTime
+stock Int 
+createdAt DateTime @default(now())
+updatedAt DateTime @default(now())
+deletedAt DateTime @default(now())
+voucheruser VoucherUser[]
+transaction Transaction[]
+}
+
+model VoucherUser {
+ voucher_id String
+ user_id Int
+ voucher Voucher @relation(fields: [voucher_id], references:[voucherid], onDelete: NoAction, onUpdate: NoAction)
+ user User @relation(fields: [user_id], references:[userid], onDelete: NoAction,  onUpdate: NoAction)
+ isValid Boolean @default(false)
+ @@id([voucher_id,user_id])
+} 
+
+model Rating {
+  
+  customer_id Int
+  event_id Int
+  customer CustomerDetail @relation (fields: [customer_id], references:[customerid], onDelete: NoAction,  onUpdate: NoAction)
+  event EventDetail @relation (fields: [event_id], references:[eventid], onDelete: NoAction, onUpdate: NoAction)
+  rating Int
+   @@id([customer_id,event_id])
+  
 }

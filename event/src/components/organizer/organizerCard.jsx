@@ -16,7 +16,7 @@ function AddEventComponent() {
     eventdescription: "",
     eventtype: "",
     eventstatus: "",
-    eventlocation: 0,
+    eventlocation: "",
     voucherid: 0,
     availableseat: 0,
     reservedseat: "",
@@ -40,12 +40,12 @@ function AddEventComponent() {
     const event = res.data.result;
     formik.setFieldValue("id", event.id);
     formik.setFieldValue("eventname", event.eventname);
+    formik.setFieldValue("eventlocation", event.eventlocation);
     formik.setFieldValue("eventposter", event.eventposter);
     formik.setFieldValue("eventprice", event.eventprice);
     formik.setFieldValue("eventdescription", event.eventdescription);
-    formik.setFieldValue("eventdate", event.eventdate);
-    formik.setFieldValue("eventdate", event.eventdate);
-
+    // formik.setFieldValue("eventdate", event.eventdate);
+    // formik.setFieldValue("eventdate", event.eventdate);
     formik.setFieldValue("eventtype", event.eventtype);
     formik.setFieldValue("availableseat", event.availableseat);
   };
@@ -66,13 +66,13 @@ function AddEventComponent() {
     console.log(formik.values);
     const form = new FormData();
     form.append("eventname", formik.values.eventname);
+    form.append("eventlocation", formik.values.eventlocation);
     form.append("eventposter", formik.values.eventposter);
     form.append("eventprice", formik.values.eventprice);
     form.append("eventdescription", formik.values.eventdescription);
     form.append("eventtype", formik.values.eventtype);
     form.append("starteventdate", formik.values.starteventdate);
     form.append("endeventdate", formik.values.endeventdate);
-
     form.append("availableseat", formik.values.availableseat);
 
     if (formik.values.id) {
@@ -103,20 +103,19 @@ function AddEventComponent() {
   return (
     <div>
       {" "}
-      <div className="w-full py-3">
-        <form id="form" action="" onSubmit={formik.handleSubmit}>
-          <h1 className="font-semibold text-base text-black py-2">
-            Add Event Information Details
-          </h1>
-          <div className="flex flex-col gap-1 text-black  font-normal">
-            <table>
+      {/* <div className="w-full py-3"> */}
+      <form id="form" action="" onSubmit={formik.handleSubmit}>
+        `{" "}
+        <div className="flex flex-col gap-1 text-black font-normal">
+          <table className=" ">
+            <tbody>
               <tr>
-                <td className="px-2 "> Event Name</td>
+                <td className="px-2 text-[12.5px] font-normal"> Name</td>
                 <td>
                   <input
                     type="text"
                     placeholder=" Event Name"
-                    className="border border-gray-300 py-1 text-[14px] text-black rounded-md min-w-64"
+                    className="border border-gray-300 py-1 text-[12.5px] text-black rounded-md min-w-64"
                     required
                     id="eventname"
                     value={formik.values.eventname}
@@ -127,19 +126,40 @@ function AddEventComponent() {
                   />
                 </td>
               </tr>
+
               <tr>
-                <td className="px-2 "> Event Poster</td>
+                <td className="px-2 text-[12.5px] font-normal "> Location</td>
+                <td>
+                  <input
+                    type="text"
+                    placeholder=" Event Location Detail"
+                    className="border border-gray-300 py-1 text-[12.5px]  text-black rounded-md min-w-64"
+                    required
+                    id="eventlocation"
+                    value={formik.values.eventlocation}
+                    onChange={formik.handleChange}
+                    // onChange={(e) => {
+                    //   formik.setFieldValue("product_name", e.target.value);
+                    // }}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td className="px-2 text-[12.5px] font-normal ">
+                  {" "}
+                  Event Poster
+                </td>
                 <td>
                   <input
                     type="file"
                     placeholder=" Poster Url"
-                    className="border p-1 text-[14px] text-black rounded-md  w-96 hidden"
+                    className="border p-1 text-[12.5px] text-black rounded-md  w-96 hidden"
                     id="eventposter"
                     onChange={(e) => renderFile(e)}
                     ref={upload}
                   />
                   <button
-                    className="bg-full bg-[#FADB7A] text-[14px] text-black px-3 h-8 w-38 flex gap-2
+                    className="bg-full bg-[#FADB7A] text-[12.5px] text-black px-3 h-8 w-38 flex gap-2
             items-center
            rounded-md "
                     type="button"
@@ -153,10 +173,10 @@ function AddEventComponent() {
                 </td>
               </tr>
               <tr>
-                <td className="px-2 "> Event Type</td>
+                <td className="px-2 text-[12.5px] font-normal"> Event Type</td>
                 <td>
                   {/* dropdown */}
-                  <div className="w-64 bg-white">
+                  <div className="w-64 text-[12.5px] font-normal bg-white">
                     <Select label="Event Type">
                       <Option>Free</Option>
                       <Option>Paid</Option>
@@ -165,12 +185,15 @@ function AddEventComponent() {
                 </td>
               </tr>
               <tr>
-                <td className="px-2 "> Event Ticket Price</td>
+                <td className="px-2 text-[12.5px] font-normal ">
+                  {" "}
+                  Ticket Price
+                </td>
                 <td>
                   <input
                     type="number"
                     placeholder=" Ticket Price"
-                    className="border border-gray-300 py-1 text-[14px] text-black rounded-md min-w-64"
+                    className="border border-gray-300 py-1 text-[12.5px] text-black rounded-md min-w-64"
                     min={0}
                     required
                     id="eventprice"
@@ -181,12 +204,15 @@ function AddEventComponent() {
               </tr>
 
               <tr>
-                <td className="px-2 "> Event Description</td>
+                <td className="px-2 text-[12.5px] font-normal">
+                  {" "}
+                  Event Description
+                </td>
                 <td>
                   <textarea
                     type="text"
                     placeholder=" Event description"
-                    className="border border-gray-300 text-[14px] text-black rounded-md py-1 min-w-64"
+                    className="border border-gray-300 text-[12.5px] text-black rounded-md py-1 min-w-64"
                     required
                     value={formik.values.eventdescription}
                     id="eventdescription"
@@ -196,7 +222,7 @@ function AddEventComponent() {
               </tr>
 
               <tr>
-                <td className="px-2"> Event Date</td>
+                <td className="px-2 text-[12.5px] font-normal"> Event Date</td>
                 <td>
                   <RangePicker
                     // value={formik.values.eventdate}
@@ -206,21 +232,22 @@ function AddEventComponent() {
                     onChange={(e) => {
                       //   console.log(e[0].$d);
                       //   console.log(e[1].$d);
-
                       formik.setFieldValue("starteventdate", e[0].$d);
-
                       formik.setFieldValue("endeventdate", e[1].$d);
                     }}
                   />
                 </td>
               </tr>
               <tr>
-                <td className="px-2 "> Available Seat</td>
+                <td className="px-2 text-[12.5px] font-normal ">
+                  {" "}
+                  Available Seat
+                </td>
                 <td>
                   <input
                     type="number"
                     placeholder="Available Seat "
-                    className="border border-gray-300 py-1 text-[14px] text-black rounded-md min-w-64"
+                    className="border border-gray-300 py-1 text-[12.5px] text-black rounded-md min-w-64"
                     min={0}
                     max={1000}
                     required
@@ -230,24 +257,26 @@ function AddEventComponent() {
                   />
                 </td>
               </tr>
-            </table>
-            <tr className="flex gap-2 p-2">
-              <button
-                className=" bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
-                type="submit"
-              >
-                Save
-              </button>
-              <button
-                className="bg-[#FADB7A] hover:bg-[#FABB11] text-black p-1 px-2 text-[12.5px] rounded-md w-24 "
-                onClick={() => formik.resetForm()}
-              >
-                Reset
-              </button>
-            </tr>
+            </tbody>
+          </table>
+          <div className="flex gap-2 p-2">
+            <button
+              className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+              type="submit"
+            >
+              Save
+            </button>
+            <button
+              className="h-[40px] mt-1 text-[12.5px] border w-[128px] rounded-lg text-white bg-black hover:bg-white border-black hover:text-black"
+              onClick={() => formik.resetForm()}
+            >
+              Reset
+            </button>
           </div>
-        </form>
-      </div>
+        </div>
+        `
+      </form>
+      {/* </div> */}
     </div>
   );
 }

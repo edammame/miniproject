@@ -3,9 +3,9 @@
 import axios from "axios";
 
 export const axiosInstance = () => {
-  const token = localStorage.getItem("user");
+  const token = localStorage.getItem("users");
   return axios.create({
-    baseURL: "http://localhost:8500",
+    baseURL: "http://localhost:5500",
     headers: {
       Authorization: token,
     },
@@ -14,6 +14,6 @@ export const axiosInstance = () => {
 
 export const axiosInstanceSSR = () => {
   return axios.create({
-    baseURL: "http://localhost:8500",
+    baseURL: "http://localhost:5500",
   });
 };

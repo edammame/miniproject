@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import { redirect } from "next/navigation";
-import LoadingPage from "@/components/loading";
 
 const guestOnly = "guestOnly";
 const needLogin = "needLogin";
-const adminOnly = "adminOnly";
+const organizerOnly = "organizerOnly";
 
 class Route {
   constructor(path, type) {
@@ -18,10 +17,16 @@ class Route {
 }
 
 const routes = [];
-routes.push(new Route("/"));
+routes.push(new Route("/"), guestOnly);
+routes.push(new Route("/auth/customerRegister", guestOnly));
+routes.push(new Route("/auth/orgenizerRegister", guestOnly));
 routes.push(new Route("/auth/login", guestOnly));
-routes.push(new Route("/auth/register", guestOnly));
-routes.push(new Route("/admin/dashboard", adminOnly));
+routes.push(new Route("/customer/events")); //, needLogin
+routes.push(new Route("/customer/events/[eventid]"));
+routes.push(new Route("/organizer/dashboard", organizerOnly));
+routes.push(new Route("/organizer/home", organizerOnly));
+routes.push(new Route("/organizer/transaction", organizerOnly));
+routes.push(new Route("/organizer/voucher", organizerOnly));
 
 export default function ProtectedPage({ children }) {
   const userSelector = useSelector((state) => state.auth);
@@ -29,20 +34,22 @@ export default function ProtectedPage({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log(userSelector);
     const checkRoute = routes.find((route) => route.path == pathname);
-    if (checkRoute?.type == adminOnly && userSelector.role != "admin")
+    console.log(checkRoute, pathname);
+    if (checkRoute?.type == organizerOnly && userSelector.role != "organizer")
       return redirect("/auth/login");
     else if (checkRoute?.type == needLogin && !userSelector.email)
       return redirect("/auth/login");
     else if (checkRoute?.type == guestOnly && userSelector.email)
-      return userSelector.role == "admin"
-        ? redirect("/admin/dashboard")
-        : redirect("/");
+      return userSelector.role == "organizer"
+        ? redirect("/organizer/dashboard")
+        : redirect("/customer/events");
     else
       setTimeout(() => {
         setIsLoading(false);
-      }, 500);
-  }, [children, userSelector.id]);
+      }, 1000);
+  }, [userSelector]);
 
-  return <div>{isLoading ? <LoadingPage /> : children}</div>;
+  return isLoading ? <> loading</> : children;
 }
