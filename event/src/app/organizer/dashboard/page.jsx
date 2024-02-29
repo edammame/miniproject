@@ -2,16 +2,20 @@
 import React from "react";
 // import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
 import { axiosInstance } from "../../../axios/axios";
 import { useDebounce } from "use-debounce";
+// import OrganizerProductCard from "@/app/components/organizer/organizerCard";
 import { IoSearch } from "react-icons/io5";
+// import { LuCopyPlus } from "react-icons/lu";
 import {
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+// import {
+//   ArrowDownTrayIcon,
+//   MagnifyingGlassIcon,
+// } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
@@ -26,7 +30,6 @@ import {
   Input,
 } from "@material-tailwind/react";
 import AddEventComponent from "../../../components/organizer/organizerCard";
-import SidebarComponent from "@/components/sidebar";
 
 function DashboardPage() {
   {
@@ -93,7 +96,6 @@ function DashboardPage() {
           <div className="w-full text-black font-semibold p-4 text-lg">
             Organizer Event Management Dashboard
           </div>
-          <SidebarComponent />
           {/* Search Bar  */}
           <div className="py-5 w-full ">
             <div className="flex px-3 items-center gap-3 border-gray-300 border-b w-72  p-2">
@@ -114,12 +116,12 @@ function DashboardPage() {
               <div className=" flex flex-col justify-between gap-3 md:flex-row md:items-center">
                 <div>
                   <Typography
-                    className=" text-[14px] font-semibold"
+                    className=" text-base font-semibold"
                     color="blue-gray"
                   >
                     Event Last Added
                   </Typography>
-                  <Typography color="gray" className="mt-1 text-[11px] ">
+                  <Typography color="gray" className="mt-1 font-normal text-sm">
                     These are list of event details that are added to the
                     database
                   </Typography>
@@ -133,12 +135,12 @@ function DashboardPage() {
                     {tableHead.map((head) => (
                       <th
                         key={head}
-                        className="border-y   border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
+                        className="border-y text-center border-blue-gray-100 bg-blue-gray-50/50 px-1 py-3"
                       >
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="text-center font-semibold text-[12px] leading-none opacity-70"
+                          className="font-normal leading-none opacity-70"
                         >
                           {head}
                         </Typography>
@@ -165,7 +167,7 @@ function DashboardPage() {
                         : "p-4 border-b border-blue-gray-50";
 
                       return (
-                        <tr key={eventname}>
+                        <tr key={key}>
                           <td className={classes}>
                             <div className="flex items-center gap-2">
                               <Typography
@@ -249,37 +251,6 @@ function DashboardPage() {
                 </tbody>
               </table>
             </CardBody>
-            <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-              <button size="sm">
-                <FaArrowLeft />
-              </button>
-              <div className="flex items-center gap-2">
-                <IconButton variant="outlined" size="sm">
-                  1
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  2
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  3
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  ...
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  8
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  9
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  10
-                </IconButton>
-              </div>
-              <button size="sm">
-                <FaArrowRight />
-              </button>
-            </CardFooter>
           </Card>
 
           {/* Event List */}
@@ -308,7 +279,7 @@ function DashboardPage() {
 
           <Accordion open={open === 1} className="mt-14 px-5">
             <AccordionHeader
-              className="text-[14px]"
+              className="text-base"
               onClick={() => handleOpen(1)}
             >
               New Event Details
@@ -428,18 +399,18 @@ function DashboardPage() {
           </Accordion>
           <Accordion open={open === 2}>
             <AccordionHeader
-              className="text-[14px] px-5"
+              className="text-base  px-5"
               onClick={() => handleOpen(2)}
             >
-              Events Summary
+              Recent Transaction
             </AccordionHeader>
             <AccordionBody>
-              event by category & event by location will shown here
+              creating new voucher code will be here
             </AccordionBody>
           </Accordion>
           <Accordion open={open === 3}>
             <AccordionHeader
-              className="text-[14px] px-5"
+              className="text-base  px-5"
               onClick={() => handleOpen(3)}
             >
               Overview & Statistic
