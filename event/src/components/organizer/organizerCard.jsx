@@ -15,7 +15,8 @@ function AddEventComponent({ editId, fetchEvents }) {
     eventprice: 0,
     eventstartdate: new Date(),
     eventenddate: new Date(),
-    eventposter: null,
+    eventposter: "",
+    image: null,
     eventdescription: "",
     eventtype: "Free",
     location_id: "",
@@ -85,6 +86,7 @@ function AddEventComponent({ editId, fetchEvents }) {
     const form = new FormData();
     form.append("eventname", formik.values.eventname);
     form.append("eventlocation", formik.values.location_id);
+    form.append("image", formik.values.image);
     form.append("eventposter", formik.values.eventposter);
     form.append("eventprice", formik.values.eventprice);
     form.append("eventdescription", formik.values.eventdescription);
@@ -128,6 +130,10 @@ function AddEventComponent({ editId, fetchEvents }) {
   useEffect(() => {
     fetchLocation();
   }, []);
+
+  const renderFile = (e) => {
+    formik.setFieldValue("image", e.target.files[0]);
+  };
   return (
     <div>
       <form id="form" action="" onSubmit={formik.handleSubmit}>
@@ -185,7 +191,7 @@ function AddEventComponent({ editId, fetchEvents }) {
                     placeholder=" Poster Url"
                     className="border p-1 text-[12.5px] text-black rounded-md  w-96 hidden"
                     id="eventposter"
-                    onChange={(e) => renderFile(e)}
+                    onChange={renderFile}
                     ref={upload}
                   />
                   <button

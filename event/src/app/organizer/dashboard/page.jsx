@@ -1,5 +1,6 @@
 "use client";
 import React, { MaterialTailwind } from "react";
+
 // import { DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
 
@@ -15,6 +16,8 @@ import { FaRegEdit } from "react-icons/fa";
 import { FiDelete } from "react-icons/fi";
 import { MdOutlineQrCode2 } from "react-icons/md";
 
+//Pagination
+import { Pagination as MuiPagination } from "@mui/material";
 import {
   Accordion,
   AccordionHeader,
@@ -101,6 +104,12 @@ function DashboardPage() {
     fetchEvents();
   }, [value]);
 
+  {
+    /* Pagination */
+  }
+  const [page, setPage] = React.useState(1);
+  const totalPages = 10;
+
   return (
     <>
       <div className="w-full bg-[#F1F1F1]">
@@ -131,7 +140,7 @@ function DashboardPage() {
           </div>
 
           {/* /Trial: https://www.material-tailwind.com/docs/react/table */}
-          <Card className="h-full w-full items-center">
+          <Card className="h-full w-full items-center ">
             <CardHeader
               floated={false}
               shadow={false}
@@ -139,8 +148,9 @@ function DashboardPage() {
             >
               <p className="px-5">Database event details</p>
             </CardHeader>
-            <CardBody className="overflow-scroll">
-              <table className="w-full min-w-max table-auto">
+
+            <CardBody className="overflow-scroll w-full ">
+              <table className="table-auto overflow-scroll w-full ">
                 <thead>
                   <tr>
                     {tableHead.map((head) => (
@@ -159,7 +169,7 @@ function DashboardPage() {
                     ))}
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="h-[200px] ">
                   {events.map(
                     (
                       {
@@ -281,36 +291,14 @@ function DashboardPage() {
                 </tbody>
               </table>
             </CardBody>
+
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-              <button size="sm">
-                <FaArrowLeft />
-              </button>
-              <div className="flex items-center gap-2">
-                <IconButton variant="outlined" size="sm">
-                  1
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  2
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  3
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  ...
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  8
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  9
-                </IconButton>
-                <IconButton variant="text" size="sm">
-                  10
-                </IconButton>
-              </div>
-              <button size="sm">
-                <FaArrowRight />
-              </button>
+              <MuiPagination
+                color="primary"
+                count={totalPages}
+                page={page}
+                onChange={(_, newPage) => setPage(newPage)}
+              />
             </CardFooter>
           </Card>
           <Accordion open={open === 1} className="mt-14 px-5">

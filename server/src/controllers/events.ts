@@ -109,7 +109,6 @@ export const eventController = {
         eventprice,
         eventstartdate: new Date(eventstartdate),
         eventenddate: new Date(eventenddate),
-        eventposter: req.file?.filename,
         eventdescription,
         eventtype,
         availableseat: Number(availableseat),
@@ -125,7 +124,9 @@ export const eventController = {
           },
         },
       };
-      console.log(req.file);
+
+      if (req.file?.filename)
+        editEvent.eventposter = String(req.file?.filename);
 
       await prisma.eventDetail.update({
         data: editEvent,
@@ -165,7 +166,7 @@ export const eventController = {
         eventprice,
         eventstartdate,
         eventenddate,
-        eventposter,
+
         eventdescription,
         eventtype,
         eventlocation,
@@ -178,7 +179,7 @@ export const eventController = {
         eventprice,
         eventstartdate: new Date(eventstartdate),
         eventenddate: new Date(eventenddate),
-        eventposter: req.file?.filename,
+        eventposter: String(req.file?.filename),
         eventdescription,
         eventtype,
         availableseat: Number(availableseat),
@@ -200,7 +201,7 @@ export const eventController = {
       });
 
       // ini untuk EventCategory .. frontend - multiselect
-      const eventcategoriesInsert = eventcategories.map((eventId: number) => {
+      const eventcategoriesInsert = eventcategories?.map((eventId: number) => {
         return {
           event_id: newEv.eventid,
           category_id: eventId,
@@ -208,12 +209,12 @@ export const eventController = {
       });
 
       // console.log(eventcategoriesInsert);
+      if (eventcategoriesInsert)
+        await prisma.eventCategory.createMany({
+          data: eventcategoriesInsert,
+        });
 
-      const ec = await prisma.eventCategory.createMany({
-        data: eventcategoriesInsert,
-      });
-
-      console.log(ec);
+      // console.log(ec);
 
       //endofcode
 
