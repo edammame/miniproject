@@ -106,8 +106,7 @@ export const transactionController = {
     try {
       const { eventid, eventname } = req.params;
       const countTransactionByeventid = await prisma.$queryRaw`
-      select * from EventTransaction et
-      join Transaction t on t.transactionid = et.transaction_id
+      select * from Transaction et
       where et.event_id= ${eventid}
       `;
 

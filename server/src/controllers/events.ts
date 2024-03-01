@@ -166,7 +166,6 @@ export const eventController = {
         eventprice,
         eventstartdate,
         eventenddate,
-
         eventdescription,
         eventtype,
         eventlocation,
@@ -214,9 +213,7 @@ export const eventController = {
           data: eventcategoriesInsert,
         });
 
-      // console.log(ec);
-
-      //endofcode
+      // console.log(ec); -- end of code
 
       res.send({
         success: true,

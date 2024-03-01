@@ -272,7 +272,7 @@ function DashboardPage() {
                                 {/* Edit */}
                               </button>
                             </Tooltip>
-                            <Tooltip content="Delete Database">
+                            {/* <Tooltip content="Delete Database">
                               <button
                                 className=" text-gray-600 text-[18px] p-2"
                                 onClick={() => {
@@ -281,8 +281,8 @@ function DashboardPage() {
                               >
                                 <FiDelete />
                                 {/* Delete */}
-                              </button>
-                            </Tooltip>
+                            {/* </button>
+                            // </Tooltip> */}
                           </td>
                         </tr>
                       );
@@ -342,7 +342,7 @@ function DashboardPage() {
               </div>
             </AccordionBody>
           </Accordion>
-          <Accordion open={open === 3}>
+          {/* <Accordion open={open === 3}>
             <AccordionHeader
               className="text-[14px] px-5"
               onClick={() => handleOpen(3)}
@@ -350,7 +350,7 @@ function DashboardPage() {
               Overview & Statistic
             </AccordionHeader>
             <AccordionBody>graph? chart?</AccordionBody>
-          </Accordion>
+          </Accordion> */}
         </div>
       </div>
     </>

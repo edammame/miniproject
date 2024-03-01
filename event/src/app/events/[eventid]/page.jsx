@@ -19,15 +19,15 @@ async function TransactionPage({ params }) {
       <HeadComponent />
       <div className=" items-centers flex flex-col  bg-[#F1F1F1]">
         {/* Event Details */}
-        <div className="flex flex-col justify-center max-w-screen-2xl w-full items-center m-auto ">
+        <div className="flex flex-col justify-center max-w-screen-2xl w-full px-4 items-center m-auto ">
           <div className="grid max-w-screen-2xl  md:grid-cols-2 p-7 gap-3 w-full  sm:grid-cols-1">
-            <div className="m-auto ">
+            {/* <div className="m-auto ">
               <img
                 className=" max-w-[734px]  max-h-[523px]"
                 src={process.env.API_URL + event?.eventposter}
                 alt=""
               />
-            </div>
+            </div> */}
             <div className=" pt-10 flex flex-col gap-2 w-9/12">
               <div className=" font-bold text-2xl">{event?.eventname}</div>
 

@@ -50,8 +50,14 @@ function TransactionPage() {
     countTransaction();
   }, []);
 
-  console.log(transaction, "ini print transaction");
-  console.log(count), " ini print counts";
+  // console.log(transaction, "ini print transaction");
+  // console.log(count), " ini print counts";
+
+  const numberofTransaction = Object.keys(transaction).length;
+  // const keytoSum = "totalprice";
+  // const sumofkeyval = Object.values(transaction)
+  //   .filter((val) => typeof val[keytoSum] == "number")
+  //   .reduce((ac, val) => ac + val[keytoSum], 0);
 
   return (
     <>
@@ -61,7 +67,7 @@ function TransactionPage() {
             Organizer Event Management Dashboard
           </div>
           <SidebarComponent />
-          {/* Search Bar  */}
+          {/* Search Bar 
           <div className="py-5 w-[50%]  ">
             <div className="flex px-3 items-center gap-3 border-gray-300 w-72 ">
               <IoSearch className=" w-5 h-5 text-black" />
@@ -73,22 +79,24 @@ function TransactionPage() {
                 onChange={(e) => setSearchname(e.target.value)}
               />
             </div>
-          </div>
+          </div> */}
           <div className=" bg-[#FABB11] mt-3 flex flex-col-2 font-semibold text-[16px] py-3 justify-between gap-2 px-4 w-full rounded-md">
             <div className="flex flex-col-2 gap-4 text-[15.5px] px-1">
               Transaction Overview
             </div>
           </div>
+
           {/* TransactionOverview */}
+
           <div className="flex flex-col-2 gap-2 m-2 ">
             <div className="bg-white w-[100px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
               Number of Transaction
-              <div className=" text-lg">20</div>{" "}
+              <div className="p-2 text-lg">{numberofTransaction}</div>{" "}
             </div>
-            <div className="bg-white w-[160px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
-              Total Revenue per Event
-              <div className=" text-lg">IDR 20.000.000</div>
-            </div>
+            {/* <div className="bg-white w-[160px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
+              Total Revenue
+              <div className=" text-lg">IDR {sumofkeyval}</div>
+            </div> */}
             {/* <div className="bg-white w-[100px] h-[100px] rounded-md p-2 font-semibold text-[10px]">
               Total Transaction per Event
               <div className=" text-lg">5</div>
@@ -104,11 +112,12 @@ function TransactionPage() {
           </div>
           <table className=" w-full table-auto lg:w-1/2 overflow-scroll">
             <tbody>
-              <tr className=" text-[13px] font-normal bg-[#F6F7F8]">
-                <th className="hover:bg-white py-1">TRID</th>
-                <th className="hover:bg-white py-1">Customer Name</th>
-                <th className="hover:bg-white py-1">Event Name</th>
-                <th className="hover:bg-white py-1">Voucher ID</th>
+              <tr className=" text-[13px]  font-normal bg-[#F6F7F8]">
+                <th className="hover:bg-white p-2 w-[30px]">TRID</th>
+                {/* <th className="hover:bg-white py-1">Organized By</th> */}
+                <th className="hover:bg-white p-2 ">Event Name</th>
+                <th className="hover:bg-white p-2">Voucher ID</th>
+                <th className="hover:bg-white p-2">Total Revenue</th>
               </tr>
             </tbody>
             {transaction.map((transaction, key) => (

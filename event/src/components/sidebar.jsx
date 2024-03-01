@@ -23,12 +23,12 @@ function SidebarComponent() {
         >
           Transaction
         </Link>
-        <Link
+        {/* <Link
           href="/organizer/attendee"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"
         >
           Customer
-        </Link>
+        </Link> */}
         {/* <Link
           href="/organizer/voucher"
           className="p-1.5 rounded-md hover:bg-[#F6F7F8] text-gray-700 font-semibold"

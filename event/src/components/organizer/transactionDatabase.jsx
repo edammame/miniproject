@@ -1,6 +1,8 @@
 function TransactionDatabase({
   transactionid,
   eventtransaction,
+  transaction,
+  totalprice,
   user,
   voucher,
   voucherid,
@@ -8,11 +10,13 @@ function TransactionDatabase({
 }) {
   return (
     <>
-      <tr className="text-center text-[12px]">
-        <td className="lg:w-[100px]">{transactionid}</td>
-        <td className="">{user?.username}</td>
-        <td className="">{event?.eventname}</td>
-        <td className="lg:w-[100px]">{voucher?.vouchername}</td>
+      <tr className="text-center text-[12px] gap-1">
+        <td className="lg:w-[30px]">{transactionid}</td>
+        <td className="w-[80px]">{event?.eventname}</td>
+        <td className="w-[80px]">{voucher?.vouchername}</td>
+        <td className="w-[80px]">
+          Rp {Number(totalprice).toLocaleString("id-ID")}
+        </td>
       </tr>
     </>
   );

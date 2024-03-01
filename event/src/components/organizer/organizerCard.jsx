@@ -41,6 +41,10 @@ function AddEventComponent({ editId, fetchEvents }) {
 
   const formik = useFormik({
     initialValues: intialEvent,
+    // validationSchema: Yup.object().shape({
+    //   eventname: Yup.string().required(),
+    //   availableseat: Yup.required().min(1),
+    // }),
     onSubmit: () => {
       // console.log("test onsubmit formik");
       simpan();
@@ -288,7 +292,7 @@ function AddEventComponent({ editId, fetchEvents }) {
                     placeholder="Available Seat "
                     className="border border-gray-300 py-1 text-[12.5px] text-black rounded-md min-w-64"
                     min={0}
-                    max={1000}
+                    max={10000}
                     required
                     id="availableseat"
                     value={formik.values.availableseat}

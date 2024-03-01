@@ -37,8 +37,6 @@ model CustomerDetail {
   customerid Int @id 
   customer User @relation(fields:[customerid], references: [userid], onDelete: NoAction,  onUpdate: NoAction)
   role Role? @default(customer) 
-  first_name String
-  last_name String
   inputRefCode String
   customerReferralNo String @default(uuid())
   customerTotalPoints Int
@@ -145,7 +143,6 @@ model VoucherUser {
 } 
 
 model Rating {
-  
   customer_id Int
   event_id Int
   customer CustomerDetail @relation (fields: [customer_id], references:[customerid], onDelete: NoAction,  onUpdate: NoAction)
