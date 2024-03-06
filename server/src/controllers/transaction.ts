@@ -54,7 +54,7 @@ export const transactionController = {
         totalprice,
         event: { connect: { eventid: event_id } },
 
-        user: { connect: { userid: 1 } },
+        user: { connect: { userid: user_id } },
         // userid: Number(user_id),
         // ...whereVoucher
         voucher: voucher_id

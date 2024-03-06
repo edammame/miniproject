@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import { redirect } from "next/navigation";
+import Loading from "@/components/loading";
 
 const guestOnly = "guestOnly";
 const needLogin = "needLogin";
@@ -51,5 +52,12 @@ export default function ProtectedPage({ children }) {
       }, 1000);
   }, [userSelector]);
 
-  return isLoading ? <> loading</> : children;
+  return isLoading ? (
+    <>
+      {" "}
+      <Loading />{" "}
+    </>
+  ) : (
+    children
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { MobileNav, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import EventList from "./eventlist";
 import { useDispatch, useSelector } from "react-redux";
 import { eventname } from "@/redux/slices/eventSlice";
@@ -17,11 +17,11 @@ export function NavbarEvent() {
   }, []);
 
   return (
-    <div className="bg-blue-200 px-4 py-4 lg:px-8 lg:py-4">
-      <div className="mx-6 flex items-center justify-between text-blue-gray-900">
-        <Typography as="a" href="#" className="">
+    <div className="bg-black px-4 py-4 lg:px-8 lg:py-4">
+      <div className="mx-6 flex items-center justify-center">
+        {/* <Typography as="a" href="#" className="">
           EXPERIENCE
-        </Typography>
+        </Typography> */}
 
         <div className="flex">
           <div className="flex mr-3">
@@ -41,8 +41,8 @@ export function NavbarEvent() {
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
-                      fill="#212121"
-                      class="w-9 h-9 opacity-30"
+                      fill="white"
+                      class="w-9 h-9 opacity-50"
                     >
                       <path
                         fill-rule="evenodd"

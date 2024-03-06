@@ -1,5 +1,5 @@
 "use client";
-import { axiosInstance, axiosInstanceSSR } from "@/axios/axios";
+import { axiosInstance } from "@/axios/axios";
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { DatePicker } from "antd";

@@ -1,12 +1,10 @@
 "use client";
-
 import { TbDiscount2 } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { axiosInstance } from "@/axios/axios";
 import { createContext } from "react";
 import { LuTicket } from "react-icons/lu";
-import Link from "next/link";
 import ButtontoTransactionComponent from "@/components/transaction/transactionComponent";
 
 function PromoComponent({ event }) {
@@ -23,6 +21,7 @@ function PromoComponent({ event }) {
       .get("/voucher", {
         params: {
           vouchername: "",
+          voucherId: "",
         },
       })
       .then((res) => {

@@ -275,7 +275,7 @@ function DashboardPage() {
                                 {/* Edit */}
                               </button>
                             </Tooltip>
-                            <Tooltip content="Delete Database">
+                            {/* <Tooltip content="Delete Database">
                               <button
                                 className=" text-gray-600 text-[18px] p-2"
                                 onClick={() => {
@@ -283,9 +283,9 @@ function DashboardPage() {
                                 }}
                               >
                                 <FiDelete />
-                                {/* Delete */}
+                                
                               </button>
-                            </Tooltip>
+                            </Tooltip> */}
                           </td>
                         </tr>
                       );

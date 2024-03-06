@@ -1,9 +1,10 @@
 import { axiosInstanceSSR } from "@/axios/axios";
 import React from "react";
+import { useParams } from "react-router-dom";
 
-import PromoComponent from "@/components/transaction/promoComponent";
 import HeadComponent from "@/components/transaction/headerComponent";
 import moment from "moment/moment";
+import PromoComponent from "@/components/transaction/promoComponent";
 
 // dont forget to write async
 async function TransactionPage({ params }) {
@@ -11,7 +12,6 @@ async function TransactionPage({ params }) {
 
   const event = (await axiosInstanceSSR().get("/events/" + eventid)).data
     .result;
-
   console.log(event);
 
   return (

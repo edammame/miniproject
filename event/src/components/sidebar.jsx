@@ -41,8 +41,8 @@ function SideBar() {
                 className=" object-cover h-full rounded-full"
               />
             </div>
-            <div className="text-black bg-red-300 ml-2 mt-5">
-              {user?.username}
+            <div className="text-black text-xl ml-2 mt-5">
+              username{user?.username}
             </div>
           </div>
           <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>

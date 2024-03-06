@@ -2,6 +2,7 @@
 import { keepLogin } from "@/redux/middleware/user";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Loading from "@/components/loading";
 
 function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +14,16 @@ function AuthProvider({ children }) {
       setIsLoading(false);
     }, 500);
   }, []);
-  return <div>{isLoading ? <></> : children}</div>;
+  return (
+    <div>
+      {isLoading ? (
+        <>
+          <Loading />
+        </>
+      ) : (
+        children
+      )}
+    </div>
+  );
 }
 export default AuthProvider;

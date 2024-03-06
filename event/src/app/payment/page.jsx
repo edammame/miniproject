@@ -12,9 +12,14 @@ function PaymentPage() {
           Booking Ticket Successful
         </div>
 
-        <Link href="/events">
+        <Link href="/customer/events">
           <div className="p-5 m-2 w-[150px] justify-items-center text-sm py-2 rounded-2xl bg-[#FFFFFF] lg:mx-96 flex flex-cols gap-2 justify-between items-center">
             Return to Home
+          </div>
+        </Link>
+        <Link href="/ratings">
+          <div className="p-5 m-2 w-[150px] justify-center text-sm py-2 rounded-2xl bg-[#FFFFFF] lg:mx-96 flex flex-cols gap-2 items-center">
+            Rating
           </div>
         </Link>
       </div>

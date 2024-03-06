@@ -46,7 +46,7 @@ export const userController = {
       });
 
       const token = sign({ email }, secretKey, {
-        expiresIn: "5hr",
+        expiresIn: "8hr",
       });
 
       const rendered = mustache.render(template, {

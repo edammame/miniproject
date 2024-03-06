@@ -7,16 +7,16 @@ import { ReqUser } from "../middlewares/auth-middleware";
 export const voucherController = {
   async getVoucher(req: Request, res: Response, next: NextFunction) {
     try {
-      const { vouchername } = req.query;
+      const { vouchername, voucherid } = req.query;
       const voucher = await prisma.voucher.findMany({
         where: {
-          vouchername: {
-            contains: String(vouchername).toLowerCase(),
-          },
+          OR: [
+            { vouchername: { contains: String(vouchername).toLowerCase() } },
+            { voucherid: { contains: String(voucherid).toLowerCase() } },
+          ],
         },
       });
       console.log(voucher);
-
       res.send({
         success: true,
         result: voucher,

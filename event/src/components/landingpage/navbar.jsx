@@ -14,20 +14,8 @@ export function NavbarComponent() {
   }, []);
 
   return (
-    <div className="sticky top-0 isolate gap-x-6 overflow-hidden bg-gray-50 px-4 py-4 w-full">
-      <div
-        className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl w-[125%]"
-        aria-hidden="true"
-      >
-        <div
-          className="container mx-auto flex items-center justify-between text-blue-gray-900 aspect-[577/310] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
-          style={{
-            clipPath:
-              "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 0% 74.2%, 0% 54.1%, 68.6% 100%, 74.8% 41.9%)",
-          }}
-        ></div>
-      </div>
-      <div className="mx-6 flex items-center justify-between text-blue-gray-900">
+    <div className="sticky top-0 isolate gap-x-6 overflow-hidden bg-black px-4 py-4 w-full">
+      <div className="mx-6 flex items-center justify-between text-white">
         <Typography
           as="a"
           href="#"
@@ -36,7 +24,7 @@ export function NavbarComponent() {
           EXPERIENCE
         </Typography>
 
-        <div className="flex items-center gap-x-3 z-10">
+        <div className="flex items-center gap-x-6 z-10">
           <Link
             className="text-sm font-semibold hidden lg:inline-block"
             href={"/auth/login"}
@@ -89,8 +77,8 @@ export function NavbarComponent() {
         </IconButton>
       </div>
       <Collapse open={openNav}>
-        <div className="container mx-auto">
-          <div className="flex items-center gap-x-3">
+        <div className="container mx-6 pt-4 pb-4">
+          <div className="flex items-center gap-x-3 text-white">
             <Link
               fullWidth
               variant="text"
